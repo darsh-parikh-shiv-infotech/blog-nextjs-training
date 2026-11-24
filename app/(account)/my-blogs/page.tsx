@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import { requireUser } from "@/lib/utils/utils";
 import Loader from "@/components/common/Loader";
+import { COMMON_UI_STRING } from "@/lib/constants/constant";
 
 async function MyBlogsContent() {
   const user = await requireUser();
@@ -32,7 +33,7 @@ async function MyBlogsContent() {
 
 function MyBlogsLoader() {
   return (
-    <Loader message="Loading Blogs..." />
+    <Loader message={COMMON_UI_STRING.LOADING} />
   );
 }
 

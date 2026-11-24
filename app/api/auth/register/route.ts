@@ -52,7 +52,7 @@ export async function POST(request: Request) {
     if (error instanceof ValidationError) {
       return NextResponse.json(
         {
-          message: "Please check your submitted information.",
+          message: MESSAGES.COMMON.INVALID_FORM,
           errors: error.errors,
         },
         { status: StatusCodes.BAD_REQUEST },

@@ -1,3 +1,4 @@
+
 "use client";
 
 import Link from "next/link";
@@ -7,12 +8,18 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { toast } from "sonner";
 
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { BaseButton } from "@/components/common/BaseButton";
+import { BaseTextField } from "@/components/common/BaseTextField";
+
+import {
+  AUTH_API_ROUTES,
+  AUTH_CONTENT,
+  MESSAGES,
+  ROUTES,
+} from "@/lib/constants/constant";
+
+import type { RegisterInput } from "@/lib/types/common.types";
 import { registerSchema } from "@/lib/validations/auth.schema";
-import { RegisterInput } from "@/lib/types/common.types";
-import { ROUTES } from "@/lib/constants/constant";
 
 export function RegisterForm() {
   const router = useRouter();
@@ -36,7 +43,7 @@ export function RegisterForm() {
     setSubmitting(true);
 
     try {
-      const response = await fetch("/api/auth/register", {
+      const response = await fetch(AUTH_API_ROUTES.REGISTER, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -47,7 +54,7 @@ export function RegisterForm() {
       const result = await response.json();
 
       if (!response.ok) {
-        toast.error(result.message);
+        toast.error(result.message ?? MESSAGES.COMMON.SOMETHING_WENT_WRONG);
         return;
       }
 
@@ -55,7 +62,7 @@ export function RegisterForm() {
       router.replace(ROUTES.MY_BLOGS);
       router.refresh();
     } catch {
-      toast.error("Unable to connect. Please try again.");
+      toast.error(MESSAGES.COMMON.NETWORK_ERROR);
     } finally {
       setSubmitting(false);
     }
@@ -64,101 +71,81 @@ export function RegisterForm() {
   return (
     <div className="rounded-xl border bg-background p-6 shadow-sm sm:p-8">
       <div className="mb-8 text-center">
-        <h1 className="mt-6 text-2xl font-semibold">Create your account</h1>
+        <h1 className="text-2xl font-semibold">
+          {AUTH_CONTENT.REGISTER.TITLE}
+        </h1>
 
         <p className="mt-2 text-sm text-muted-foreground">
-          Start writing and sharing your stories.
+          {AUTH_CONTENT.REGISTER.DESCRIPTION}
         </p>
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-        <div className="space-y-2">
-          <Label htmlFor="name">Name</Label>
+        <BaseTextField
+          id="name"
+          label={AUTH_CONTENT.FIELDS.NAME}
+          placeholder={AUTH_CONTENT.FIELDS.NAME_PLACEHOLDER}
+          autoComplete="name"
+          error={errors.name?.message}
+          {...register("name")}
+        />
 
-          <Input
-            id="name"
-            placeholder="Your name"
-            autoComplete="name"
-            {...register("name")}
-          />
+        <BaseTextField
+          id="email"
+          label={AUTH_CONTENT.FIELDS.EMAIL}
+          type="email"
+          placeholder={AUTH_CONTENT.FIELDS.EMAIL_PLACEHOLDER}
+          autoComplete="email"
+          error={errors.email?.message}
+          {...register("email")}
+        />
 
-          {errors.name && (
-            <p className="text-sm text-destructive">{errors.name.message}</p>
-          )}
-        </div>
+        <BaseTextField
+          id="password"
+          label={AUTH_CONTENT.FIELDS.PASSWORD}
+          type="password"
+          placeholder={AUTH_CONTENT.FIELDS.REGISTER_PASSWORD_PLACEHOLDER}
+          autoComplete="new-password"
+          error={errors.password?.message}
+          {...register("password")}
+        />
 
-        <div className="space-y-2">
-          <Label htmlFor="email">Email</Label>
+        <BaseTextField
+          id="confirmPassword"
+          label={AUTH_CONTENT.FIELDS.CONFIRM_PASSWORD}
+          type="password"
+          placeholder={AUTH_CONTENT.FIELDS.CONFIRM_PASSWORD_PLACEHOLDER}
+          autoComplete="new-password"
+          error={errors.confirmPassword?.message}
+          {...register("confirmPassword")}
+        />
 
-          <Input
-            id="email"
-            type="email"
-            placeholder="you@example.com"
-            autoComplete="email"
-            {...register("email")}
-          />
-
-          {errors.email && (
-            <p className="text-sm text-destructive">{errors.email.message}</p>
-          )}
-        </div>
-
-        <div className="space-y-2">
-          <Label htmlFor="password">Password</Label>
-
-          <Input
-            id="password"
-            type="password"
-            placeholder="At least 8 characters"
-            autoComplete="new-password"
-            {...register("password")}
-          />
-
-          {errors.password && (
-            <p className="text-sm text-destructive">
-              {errors.password.message}
-            </p>
-          )}
-        </div>
-
-        <div className="space-y-2">
-          <Label htmlFor="confirmPassword">Confirm password</Label>
-
-          <Input
-            id="confirmPassword"
-            type="password"
-            placeholder="Re-enter your password"
-            autoComplete="new-password"
-            {...register("confirmPassword")}
-          />
-
-          {errors.confirmPassword && (
-            <p className="text-sm text-destructive">
-              {errors.confirmPassword.message}
-            </p>
-          )}
-        </div>
-
-        <Button type="submit" className="w-full" disabled={submitting}>
-          {submitting ? "Creating account..." : "Create account"}
-        </Button>
+        <BaseButton
+          type="submit"
+          className="w-full"
+          isLoading={submitting}
+          loadingText={AUTH_CONTENT.REGISTER.SUBMITTING}
+        >
+          {AUTH_CONTENT.REGISTER.SUBMIT}
+        </BaseButton>
       </form>
 
       <p className="mt-6 text-center text-sm text-muted-foreground">
-        Already have an account?{" "}
+        {AUTH_CONTENT.REGISTER.HAS_ACCOUNT}{" "}
         <Link
           href={ROUTES.LOGIN}
           className="font-medium text-foreground underline underline-offset-4"
         >
-          Log in
+          {AUTH_CONTENT.REGISTER.LOGIN_LINK}
         </Link>
       </p>
+
       <p className="mt-6 text-center text-sm text-muted-foreground">
         <Link
           href={ROUTES.HOME}
-          className="text-violet-600 font-medium underline underline-offset-4"
+          className="font-medium text-violet-600 underline underline-offset-4"
         >
-          Return To Home
+          {AUTH_CONTENT.RETURN_HOME}
         </Link>
       </p>
     </div>

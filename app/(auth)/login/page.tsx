@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 
 import { LoginForm } from "@/components/auth/login-form";
 import { getCurrentUser } from "@/lib/utils/utils";
-import { ROUTES } from "@/lib/constants/constant";
+import { COMMON_UI_STRING, ROUTES } from "@/lib/constants/constant";
 import Loader from "@/components/common/Loader";
 
 async function LoginContent() {
@@ -18,7 +18,7 @@ async function LoginContent() {
 
 function LoginLoader() {
   return (
-    <Loader message="Checking Authetication.." />
+    <Loader message={COMMON_UI_STRING.CHECKING_AUTH} />
   );
 }
 

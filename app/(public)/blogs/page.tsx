@@ -118,7 +118,7 @@ export function BlogListingContent({ searchParams }: BlogListingContentProps) {
                   href={getPageUrl(safePage - 1)}
                   className="rounded-md border px-4 py-2 text-sm hover:bg-muted"
                 >
-                  {COMMON_UI_STRING.NEXT}
+                  {COMMON_UI_STRING.PREVIOUS}
                 </Link>
               )}
 
@@ -131,7 +131,7 @@ export function BlogListingContent({ searchParams }: BlogListingContentProps) {
                   href={getPageUrl(safePage + 1)}
                   className="rounded-md border px-4 py-2 text-sm hover:bg-muted"
                 >
-                  {COMMON_UI_STRING.PREVIOUS}
+                  {COMMON_UI_STRING.NEXT}
                 </Link>
               )}
             </div>

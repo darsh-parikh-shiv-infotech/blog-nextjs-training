@@ -2,7 +2,7 @@ import { redirect } from "next/navigation";
 
 import { RegisterForm } from "@/components/auth/register-form";
 import { getCurrentUser } from "@/lib/utils/utils";
-import { ROUTES } from "@/lib/constants/constant";
+import { COMMON_UI_STRING, ROUTES } from "@/lib/constants/constant";
 import Loader from "@/components/common/Loader";
 import { Suspense } from "react";
 
@@ -17,7 +17,7 @@ async function RegisterContent() {
 }
 
 function RegisterLoader() {
-  return <Loader message="Checking Authetication.." />;
+  return <Loader message={COMMON_UI_STRING.CHECKING_AUTH} />;
 }
 
 export default async function RegisterPage() {

@@ -1,5 +1,7 @@
 import "server-only";
-import { User } from "../types/common.types";
+
+import { MESSAGES } from "@/lib/constants/constant";
+import type { User } from "@/lib/types/common.types";
 
 const USERS_ENDPOINT = `${process.env.JSON_SERVER_URL}/users`;
 
@@ -11,7 +13,7 @@ export async function getUserByEmail(email: string): Promise<User | null> {
   });
 
   if (!response.ok) {
-    throw new Error("Unable to retrieve user.");
+    throw new Error(MESSAGES.API.USER_FETCH_FAILED);
   }
 
   const users: User[] = await response.json();
@@ -29,7 +31,7 @@ export async function getUserById(id: string): Promise<User | null> {
   }
 
   if (!response.ok) {
-    throw new Error("Unable to retrieve user.");
+    throw new Error(MESSAGES.API.USER_FETCH_FAILED);
   }
 
   return response.json();
@@ -48,7 +50,7 @@ export async function createUser(
   });
 
   if (!response.ok) {
-    throw new Error("Unable to create user.");
+    throw new Error(MESSAGES.API.USER_CREATE_FAILED);
   }
 
   return response.json();

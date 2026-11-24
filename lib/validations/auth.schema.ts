@@ -1,39 +1,41 @@
 
 import * as yup from "yup";
 
+import { VALIDATION_MESSAGES } from "@/lib/constants/constant";
+
 export const loginSchema = yup.object({
   email: yup
     .string()
     .trim()
-    .email("Enter a valid email address.")
-    .required("Email is required."),
+    .email(VALIDATION_MESSAGES.EMAIL_INVALID)
+    .required(VALIDATION_MESSAGES.EMAIL_REQUIRED),
 
   password: yup
     .string()
-    .required("Password is required."),
+    .required(VALIDATION_MESSAGES.PASSWORD_REQUIRED),
 });
 
 export const registerSchema = yup.object({
   name: yup
     .string()
     .trim()
-    .min(2, "Name must contain at least 2 characters.")
-    .max(50, "Name cannot exceed 50 characters.")
-    .required("Name is required."),
+    .min(2, VALIDATION_MESSAGES.NAME_MIN)
+    .max(50, VALIDATION_MESSAGES.NAME_MAX)
+    .required(VALIDATION_MESSAGES.NAME_REQUIRED),
 
   email: yup
     .string()
     .trim()
-    .email("Enter a valid email address.")
-    .required("Email is required."),
+    .email(VALIDATION_MESSAGES.EMAIL_INVALID)
+    .required(VALIDATION_MESSAGES.EMAIL_REQUIRED),
 
   password: yup
     .string()
-    .min(8, "Password must contain at least 8 characters.")
-    .required("Password is required."),
+    .min(8, VALIDATION_MESSAGES.PASSWORD_MIN)
+    .required(VALIDATION_MESSAGES.PASSWORD_REQUIRED),
 
   confirmPassword: yup
     .string()
-    .oneOf([yup.ref("password")], "Passwords do not match.")
-    .required("Please confirm your password."),
+    .oneOf([yup.ref("password")], VALIDATION_MESSAGES.PASSWORDS_NOT_MATCH)
+    .required(VALIDATION_MESSAGES.CONFIRM_PASSWORD_REQUIRED),
 });
