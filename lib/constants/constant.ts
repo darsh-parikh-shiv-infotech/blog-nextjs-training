@@ -1,41 +1,6 @@
-export const ROUTES = {
-  HOME: "/",
-  BLOGS: "/blogs",
-  LOGIN: "/login",
-  DASHBOARD: "/dashboard",
-  DASHBOARD_BLOGS: "/dashboard/blogs",
-  DASHBOARD_BLOG_CREATE: "/dashboard/blogs/create",
-  DASHBOARD_CATEGORIES: "/dashboard/categories",
-} as const;
+import { StatusCodes } from "http-status-codes";
 
-export const getBlogDetailsRoute = (slug: string) => `${ROUTES.BLOGS}/${slug}`;
-
-export const getBlogEditRoute = (id: string) =>
-  `${ROUTES.DASHBOARD_BLOGS}/${id}/edit`;
-
-export const MESSAGES = {
-  COMMON: {
-    SOMETHING_WENT_WRONG: "Something went wrong. Please try again.",
-    REQUIRED_FIELD: "This field is required.",
-    INVALID_EMAIL: "Please enter a valid email address.",
-  },
-  AUTH: {
-    LOGIN_SUCCESS: "You have logged in successfully.",
-    LOGIN_FAILED: "Invalid email or password.",
-    UNAUTHORIZED: "You need to log in to continue.",
-  },
-  BLOG: {
-    CREATED: "Blog post created successfully.",
-    UPDATED: "Blog post updated successfully.",
-    DELETED: "Blog post deleted successfully.",
-    NOT_FOUND: "The requested blog post could not be found.",
-  },
-  CATEGORY: {
-    CREATED: "Category created successfully.",
-    UPDATED: "Category updated successfully.",
-    DELETED: "Category deleted successfully.",
-  },
-} as const;
+export { StatusCodes };
 
 export const APP_CONFIG = {
   NAME: "BlogNext",
@@ -43,6 +8,106 @@ export const APP_CONFIG = {
   DEFAULT_LOCALE: "en",
   PAGE_SIZE: 9,
   CURRENT_FULL_YEAR: 2026,
+  SESSION_COOKIE: "blognext_session",
+  SESSION_DURATION: 60 * 60 * 24 * 7,
+} as const;
+
+export const ROUTES = {
+  HOME: "/",
+  BLOGS: "/blogs",
+  LOGIN: "/login",
+  REGISTER: "/register",
+  MY_BLOGS: "/my-blogs",
+} as const;
+
+export const AUTH_API_ROUTES = {
+  LOGIN: "/api/auth/login",
+  REGISTER: "/api/auth/register",
+  LOGOUT: "/api/auth/logout",
+  ME: "/api/auth/me",
+} as const;
+
+export const getBlogDetailsRoute = (slug: string) => `${ROUTES.BLOGS}/${slug}`;
+
+export const getMyBlogEditRoute = (id: string) =>
+  `${ROUTES.MY_BLOGS}/${id}/edit`;
+
+export const MESSAGES = {
+  COMMON: {
+    SOMETHING_WENT_WRONG: "Something went wrong. Please try again.",
+    NETWORK_ERROR: "Unable to connect. Please try again.",
+    INVALID_FORM: "Please check your submitted information.",
+    REQUIRED_FIELD: "This field is required.",
+    INVALID_EMAIL: "Please enter a valid email address.",
+  },
+  
+  API: {
+    USER_FETCH_FAILED: "Unable to retrieve user.",
+    USER_CREATE_FAILED: "Unable to create user.",
+  },
+
+  AUTH: {
+    INVALID_CREDENTIALS: "Invalid email or password.",
+    EMAIL_ALREADY_EXISTS: "An account with this email already exists.",
+    REGISTRATION_SUCCESS: "Your account has been created successfully.",
+    LOGIN_SUCCESS: "Welcome back!",
+    LOGOUT_SUCCESS: "You have been logged out.",
+    UNAUTHORIZED: "Please log in to continue.",
+    SERVER_ERROR: "Something went wrong. Please try again.",
+  },
+
+  BLOG: {
+    CREATED: "Blog post created successfully.",
+    UPDATED: "Blog post updated successfully.",
+    DELETED: "Blog post deleted successfully.",
+    NOT_FOUND: "The requested blog post could not be found.",
+  },
+} as const;
+
+export const VALIDATION_MESSAGES = {
+  EMAIL_REQUIRED: "Email is required.",
+  EMAIL_INVALID: "Enter a valid email address.",
+  PASSWORD_REQUIRED: "Password is required.",
+  PASSWORD_MIN: "Password must contain at least 8 characters.",
+  NAME_REQUIRED: "Name is required.",
+  NAME_MIN: "Name must contain at least 2 characters.",
+  NAME_MAX: "Name cannot exceed 50 characters.",
+  CONFIRM_PASSWORD_REQUIRED: "Please confirm your password.",
+  PASSWORDS_NOT_MATCH: "Passwords do not match.",
+} as const;
+
+export const AUTH_CONTENT = {
+  LOGIN: {
+    TITLE: "Welcome back",
+    DESCRIPTION: "Log in to manage your blogs.",
+    SUBMIT: "Log in",
+    SUBMITTING: "Logging in...",
+    NO_ACCOUNT: "Don't have an account?",
+    REGISTER_LINK: "Create an account",
+  },
+
+  REGISTER: {
+    TITLE: "Create your account",
+    DESCRIPTION: "Start writing and sharing your stories.",
+    SUBMIT: "Create account",
+    SUBMITTING: "Creating account...",
+    HAS_ACCOUNT: "Already have an account?",
+    LOGIN_LINK: "Log in",
+  },
+
+  FIELDS: {
+    NAME: "Name",
+    NAME_PLACEHOLDER: "Your name",
+    EMAIL: "Email",
+    EMAIL_PLACEHOLDER: "you@example.com",
+    PASSWORD: "Password",
+    LOGIN_PASSWORD_PLACEHOLDER: "Enter your password",
+    REGISTER_PASSWORD_PLACEHOLDER: "At least 8 characters",
+    CONFIRM_PASSWORD: "Confirm password",
+    CONFIRM_PASSWORD_PLACEHOLDER: "Re-enter your password",
+  },
+
+  RETURN_HOME: "Return to Home",
 } as const;
 
 export const NAVIGATION_LABELS = {
@@ -50,6 +115,8 @@ export const NAVIGATION_LABELS = {
   STORIES: "Stories",
   ABOUT: "About",
   LOGIN: "Log in",
+  MY_BLOGS: "My Blogs",
+  LOGOUT: "Log out",
 } as const;
 
 export const HOME_CONTENT = {
@@ -66,6 +133,7 @@ export const BLOG_PAGE_CONTENT = {
   EMPTY: "No blog posts are available right now.",
   NO_BLOGS_FOUND: "No articles found",
   FALLBACK_NO_BLOGS_FOUND: "Try a different search term.",
+  BACK_TO_HOME: "Back To Home",
 } as const;
 
 export const BLOG_DETAILS_CONTENT = {
@@ -78,4 +146,7 @@ export const COMMON_UI_STRING = {
   CLEAR_SEARCH: "Clear search",
   NEXT: "Next",
   PREVIOUS: "Previous",
-};
+  LOADING: "Loading...",
+  LOGGING_OUT: "Logging out...",
+  CHECKING_AUTH: "Checking authentication...",
+} as const;

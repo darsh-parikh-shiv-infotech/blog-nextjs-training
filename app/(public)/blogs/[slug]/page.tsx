@@ -2,8 +2,12 @@ import { Suspense } from "react";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { BLOGS } from "@/lib/constants/blog.data";
-import Link from "next/link";
-import { APP_CONFIG, BLOG_DETAILS_CONTENT, ROUTES } from "@/lib/constants/constant";
+import {
+  APP_CONFIG,
+  BLOG_DETAILS_CONTENT,
+  ROUTES,
+} from "@/lib/constants/constant";
+import BackButton from "@/components/common/BackButton";
 
 interface BlogDetailsPageProps {
   params: Promise<{ slug: string }>;
@@ -16,7 +20,9 @@ export async function generateMetadata({
   const blog = BLOGS.find((item) => item.slug === slug);
 
   if (!blog) {
-    return { title: `${BLOG_DETAILS_CONTENT.NOT_FOUND_TITLE} | ${APP_CONFIG.NAME}` };
+    return {
+      title: `${BLOG_DETAILS_CONTENT.NOT_FOUND_TITLE} | ${APP_CONFIG.NAME}`,
+    };
   }
 
   return {
@@ -44,12 +50,10 @@ async function BlogDetailsContent({ slug }: { slug: string }) {
 
   return (
     <article className="mx-auto max-w-3xl px-6 py-16">
-      <Link
+      <BackButton
         href={ROUTES.BLOGS}
-        className="text-sm font-medium text-[#77756d] hover:text-[#24231f]"
-      >
-        ← {BLOG_DETAILS_CONTENT.BACK_TO_BLOGS}
-      </Link>
+        message={BLOG_DETAILS_CONTENT.BACK_TO_BLOGS}
+      />
 
       <div className="mt-10">
         <p className="text-xs font-semibold tracking-[0.15em] text-[#929087]">

@@ -1,8 +1,6 @@
 import Link from "next/link";
-import { ArrowRight, ArrowUpRight, BookOpen, PenLine } from "lucide-react";
-import { APP_CONFIG, HOME_CONTENT, ROUTES } from "@/lib/constants/constant";
+import { HOME_CONTENT, ROUTES } from "@/lib/constants/constant";
 import { BLOGS } from "@/lib/constants/blog.data";
-import { SiteHeader } from "@/components/public/site-header";
 import { BlogGrid } from "@/components/public/blog-grid";
 
 export default function HomePage() {

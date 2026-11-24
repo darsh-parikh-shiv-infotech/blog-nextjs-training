@@ -1,9 +1,11 @@
+import BackButton from "@/components/common/BackButton";
 import { BlogGrid } from "@/components/public/blog-grid";
 import { BLOGS } from "@/lib/constants/blog.data";
 import {
   APP_CONFIG,
   BLOG_PAGE_CONTENT,
   COMMON_UI_STRING,
+  ROUTES,
 } from "@/lib/constants/constant";
 import Link from "next/link";
 import { Suspense } from "react";
@@ -69,6 +71,10 @@ export function BlogListingContent({ searchParams }: BlogListingContentProps) {
 
   return (
     <section className="container max-w-7xl px-6 py-10 lg:px-10 mx-auto">
+      <BackButton
+        href={ROUTES.HOME}
+        message={BLOG_PAGE_CONTENT.BACK_TO_HOME}
+      />
       <div className="mb-8">
         <h1 className="mt-3 text-4xl font-semibold tracking-[-0.04em]">
           {BLOG_PAGE_CONTENT.HEADING}
@@ -112,7 +118,7 @@ export function BlogListingContent({ searchParams }: BlogListingContentProps) {
                   href={getPageUrl(safePage - 1)}
                   className="rounded-md border px-4 py-2 text-sm hover:bg-muted"
                 >
-                  {COMMON_UI_STRING.NEXT}
+                  {COMMON_UI_STRING.PREVIOUS}
                 </Link>
               )}
 
@@ -125,7 +131,7 @@ export function BlogListingContent({ searchParams }: BlogListingContentProps) {
                   href={getPageUrl(safePage + 1)}
                   className="rounded-md border px-4 py-2 text-sm hover:bg-muted"
                 >
-                  {COMMON_UI_STRING.PREVIOUS}
+                  {COMMON_UI_STRING.NEXT}
                 </Link>
               )}
             </div>
