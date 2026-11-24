@@ -1,0 +1,270 @@
+import { Blog } from "../types/common.types";
+
+export const BLOG_CATEGORIES = [
+  "All stories",
+  "Design",
+  "Development",
+  "Culture",
+  "Product",
+  "Ideas",
+] as const;
+
+export const BLOGS: Blog[] = [
+  {
+    id: "1",
+    slug: "thoughtful-design",
+    category: "Design",
+    readTime: "6 min read",
+    title: "The quiet power of thoughtful design",
+    description:
+      "A closer look at the small decisions that make digital experiences feel clear, useful, and human.",
+    author: "Olivia Rhye",
+    publishedAt: "May 18, 2026",
+    accentClass: "from-amber-100 via-orange-50 to-rose-100",
+    content: [
+      "Good design is not always about adding something new. Sometimes it is about removing what gets in the way.",
+      "The small decisions matter: how information is grouped, how a page guides attention, and how easily someone can understand what to do next.",
+      "Thoughtful design makes an experience feel natural. The user does not need to think about the interface because the interface already makes sense.",
+    ],
+  },
+  {
+    id: "2",
+    slug: "building-for-the-web",
+    category: "Development",
+    readTime: "8 min read",
+    title: "Building for the web, one good decision at a time",
+    description:
+      "Good engineering is rarely about clever tricks. It is about making the next decision easier.",
+    author: "Phoenix Baker",
+    publishedAt: "May 12, 2026",
+    accentClass: "from-sky-100 via-cyan-50 to-indigo-100",
+    content: [
+      "Building for the web involves many small decisions. Each decision affects how easy an application is to understand, maintain, and improve.",
+      "Readable code, clear responsibilities, and predictable behavior are often more useful than clever solutions.",
+      "Good engineering is a process. Make one clear decision, test it, and build on it.",
+    ],
+  },
+  {
+    id: "3",
+    slug: "room-for-curiosity",
+    category: "Culture",
+    readTime: "5 min read",
+    title: "Making room for a little more curiosity",
+    description:
+      "Why the best ideas often begin when we slow down, look around, and ask better questions.",
+    author: "Lana Steiner",
+    publishedAt: "May 6, 2026",
+    accentClass: "from-emerald-100 via-lime-50 to-yellow-100",
+    content: [
+      "Curiosity gives us a reason to look beyond what we already know.",
+      "Taking time to explore different ideas can help us find better questions and new ways to approach familiar problems.",
+      "Sometimes progress begins with a simple question and the willingness to explore its answer.",
+    ],
+  },
+
+  {
+    id: "4",
+    slug: "designing-with-purpose",
+    category: "Design",
+    readTime: "7 min read",
+    title: "Designing with purpose, not decoration",
+    description:
+      "How intentional design choices create interfaces that are useful, accessible, and memorable.",
+    author: "Olivia Rhye",
+    publishedAt: "April 29, 2026",
+    accentClass: "from-pink-100 via-rose-50 to-orange-100",
+    content: [
+      "Design should solve a problem before it tries to decorate an experience. Every visual decision should have a reason behind it.",
+      "Color, spacing, typography, and layout work together to guide users through an interface. When these elements support one another, the experience becomes easier to understand.",
+      "A purposeful design is not necessarily complicated. It is one where every element earns its place.",
+    ],
+  },
+  {
+    id: "5",
+    slug: "the-art-of-clean-code",
+    category: "Development",
+    readTime: "9 min read",
+    title: "The art of writing clean and maintainable code",
+    description:
+      "Simple principles that help developers write code that is easier to read, understand, and maintain.",
+    author: "Phoenix Baker",
+    publishedAt: "April 22, 2026",
+    accentClass: "from-indigo-100 via-blue-50 to-sky-100",
+    content: [
+      "Code is read more often than it is written. A developer should consider how another person will understand the implementation months after it was created.",
+      "Meaningful names, small functions, and clear responsibilities make a codebase easier to work with.",
+      "Clean code does not mean writing the fewest lines possible. It means making the intention behind the code easy to understand.",
+    ],
+  },
+  {
+    id: "6",
+    slug: "finding-inspiration-everywhere",
+    category: "Ideas",
+    readTime: "5 min read",
+    title: "Finding inspiration in unexpected places",
+    description:
+      "A reminder that fresh ideas can come from everyday experiences, conversations, and observations.",
+    author: "Lana Steiner",
+    publishedAt: "April 16, 2026",
+    accentClass: "from-yellow-100 via-amber-50 to-orange-100",
+    content: [
+      "Inspiration does not always arrive when we sit down and try to find it. Sometimes it appears during an ordinary conversation or a walk through a familiar place.",
+      "Paying attention to small details helps us notice connections that we might otherwise overlook.",
+      "Keeping an open mind allows everyday experiences to become the starting point for something meaningful.",
+    ],
+  },
+  {
+    id: "7",
+    slug: "building-better-products",
+    category: "Product",
+    readTime: "8 min read",
+    title: "Building better products starts with listening",
+    description:
+      "Why understanding real user problems should come before deciding which features to build.",
+    author: "Demi Wilkinson",
+    publishedAt: "April 10, 2026",
+    accentClass: "from-violet-100 via-purple-50 to-fuchsia-100",
+    content: [
+      "A successful product is not simply a collection of features. It is a solution to problems that people genuinely experience.",
+      "Listening to users helps teams understand what matters, where people struggle, and which improvements will have the greatest impact.",
+      "Before building something new, take time to understand the people who will use it. Better questions often lead to better products.",
+    ],
+  },
+  {
+    id: "8",
+    slug: "a-culture-of-collaboration",
+    category: "Culture",
+    readTime: "6 min read",
+    title: "Creating a culture of collaboration",
+    description:
+      "How open communication and shared ownership help teams produce better work together.",
+    author: "Candice Wu",
+    publishedAt: "April 3, 2026",
+    accentClass: "from-teal-100 via-emerald-50 to-green-100",
+    content: [
+      "Good collaboration begins when people feel comfortable sharing ideas, asking questions, and discussing challenges.",
+      "A healthy team does not need everyone to think alike. Different perspectives can help uncover better solutions.",
+      "Shared ownership creates a stronger sense of responsibility and helps teams move forward together.",
+    ],
+  },
+  {
+    id: "9",
+    slug: "understanding-user-experience",
+    category: "Design",
+    readTime: "7 min read",
+    title: "Understanding the details of user experience",
+    description:
+      "Exploring how small interactions and thoughtful decisions shape the way people experience a product.",
+    author: "Olivia Rhye",
+    publishedAt: "March 27, 2026",
+    accentClass: "from-rose-100 via-pink-50 to-purple-100",
+    content: [
+      "User experience is shaped by every interaction a person has with a product, from the first impression to the smallest confirmation message.",
+      "Clear navigation, helpful feedback, and predictable behavior make people feel more confident while using an application.",
+      "Improving user experience often means identifying friction and removing unnecessary steps rather than adding more features.",
+    ],
+  },
+  {
+    id: "10",
+    slug: "modern-web-development",
+    category: "Development",
+    readTime: "10 min read",
+    title: "What makes modern web development different",
+    description:
+      "A look at the tools, practices, and architectural decisions shaping today's web applications.",
+    author: "Phoenix Baker",
+    publishedAt: "March 20, 2026",
+    accentClass: "from-cyan-100 via-sky-50 to-blue-100",
+    content: [
+      "Modern web development involves more than writing HTML, CSS, and JavaScript. Developers work with frameworks, rendering strategies, APIs, and a growing ecosystem of tools.",
+      "Choosing the right tools is important, but understanding the underlying concepts is even more valuable.",
+      "The best development workflow balances performance, maintainability, accessibility, and the needs of the people using the application.",
+    ],
+  },
+  {
+    id: "11",
+    slug: "small-steps-big-progress",
+    category: "Ideas",
+    readTime: "4 min read",
+    title: "Small steps can lead to meaningful progress",
+    description:
+      "Why consistent effort and manageable goals can make challenging projects easier to complete.",
+    author: "Lana Steiner",
+    publishedAt: "March 14, 2026",
+    accentClass: "from-lime-100 via-green-50 to-emerald-100",
+    content: [
+      "Large goals can feel overwhelming when we focus only on the final result. Breaking them into smaller steps makes progress easier to see.",
+      "Consistency helps turn individual efforts into lasting improvements. Even a small amount of focused work can make a difference over time.",
+      "Progress does not always need to be dramatic. Sometimes the most important thing is simply continuing.",
+    ],
+  },
+  {
+    id: "12",
+    slug: "from-idea-to-product",
+    category: "Product",
+    readTime: "8 min read",
+    title: "Turning an idea into a useful product",
+    description:
+      "A practical look at moving from an early concept to something people can actually use.",
+    author: "Demi Wilkinson",
+    publishedAt: "March 8, 2026",
+    accentClass: "from-orange-100 via-amber-50 to-yellow-100",
+    content: [
+      "Every product begins with an idea, but an idea alone is not enough. It needs to be explored, tested, and shaped around a real need.",
+      "Starting with a focused version of the product helps teams learn quickly without investing too much in assumptions.",
+      "Feedback and iteration turn an initial concept into something more useful and reliable.",
+    ],
+  },
+  {
+    id: "13",
+    slug: "the-value-of-different-perspectives",
+    category: "Culture",
+    readTime: "6 min read",
+    title: "The value of different perspectives",
+    description:
+      "How different experiences and viewpoints can help individuals and teams approach problems more thoughtfully.",
+    author: "Candice Wu",
+    publishedAt: "February 28, 2026",
+    accentClass: "from-fuchsia-100 via-pink-50 to-rose-100",
+    content: [
+      "Different perspectives help us see problems from angles we might not have considered ourselves.",
+      "Listening carefully and being willing to reconsider an opinion can create space for better conversations and stronger decisions.",
+      "A team becomes more capable when people can contribute their experiences and challenge ideas respectfully.",
+    ],
+  },
+  {
+    id: "14",
+    slug: "typography-that-speaks",
+    category: "Design",
+    readTime: "5 min read",
+    title: "Typography that speaks without shouting",
+    description:
+      "How type choices, hierarchy, and spacing make digital content easier and more enjoyable to read.",
+    author: "Olivia Rhye",
+    publishedAt: "February 21, 2026",
+    accentClass: "from-stone-200 via-amber-50 to-yellow-100",
+    content: [
+      "Typography influences how people experience information. It affects readability, hierarchy, and the personality of a design.",
+      "A clear type scale helps readers understand which information deserves attention and how different sections relate to one another.",
+      "Good typography rarely needs to draw attention to itself. Its success is often measured by how comfortably people can read.",
+    ],
+  },
+  {
+    id: "15",
+    slug: "learning-through-experimentation",
+    category: "Ideas",
+    readTime: "7 min read",
+    title: "Learning through experimentation",
+    description:
+      "Why trying things, making mistakes, and reviewing the results can be more valuable than waiting for perfect answers.",
+    author: "Lana Steiner",
+    publishedAt: "February 14, 2026",
+    accentClass: "from-blue-100 via-indigo-50 to-violet-100",
+    content: [
+      "Experimentation gives us a practical way to test ideas instead of relying entirely on assumptions.",
+      "Not every attempt will produce the result we expect, but each experiment can reveal something useful.",
+      "The important part is to observe the outcome, understand what happened, and use that knowledge in the next attempt.",
+    ],
+  },
+
+];
