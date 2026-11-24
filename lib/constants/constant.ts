@@ -1,11 +1,29 @@
+import { StatusCodes } from "http-status-codes";
+
+export {StatusCodes};
+
+export const APP_CONFIG = {
+  NAME: "BlogNext",
+  DESCRIPTION: "Ideas, stories, and perspectives for curious minds.",
+  DEFAULT_LOCALE: "en",
+  PAGE_SIZE: 9,
+  CURRENT_FULL_YEAR: 2026,
+  SESSION_COOKIE: "blognext_session",
+  SESSION_DURATION: 60 * 60 * 24 * 7,
+} as const;
+
 export const ROUTES = {
   HOME: "/",
   BLOGS: "/blogs",
-  LOGIN: "/login",
   DASHBOARD: "/dashboard",
   DASHBOARD_BLOGS: "/dashboard/blogs",
   DASHBOARD_BLOG_CREATE: "/dashboard/blogs/create",
   DASHBOARD_CATEGORIES: "/dashboard/categories",
+  LOGIN: "/login",
+  REGISTER: "/register",
+  LOGOUT: "/api/auth/logout",
+  ME: "/api/auth/me",
+  MY_BLOGS: "/my-blogs",
 } as const;
 
 export const getBlogDetailsRoute = (slug: string) => `${ROUTES.BLOGS}/${slug}`;
@@ -20,9 +38,13 @@ export const MESSAGES = {
     INVALID_EMAIL: "Please enter a valid email address.",
   },
   AUTH: {
-    LOGIN_SUCCESS: "You have logged in successfully.",
-    LOGIN_FAILED: "Invalid email or password.",
-    UNAUTHORIZED: "You need to log in to continue.",
+    INVALID_CREDENTIALS: "Invalid email or password.",
+    EMAIL_ALREADY_EXISTS: "An account with this email already exists.",
+    REGISTRATION_SUCCESS: "Your account has been created successfully.",
+    LOGIN_SUCCESS: "Welcome back!",
+    LOGOUT_SUCCESS: "You have been logged out.",
+    UNAUTHORIZED: "Please log in to continue.",
+    SERVER_ERROR: "Something went wrong. Please try again.",
   },
   BLOG: {
     CREATED: "Blog post created successfully.",
@@ -35,14 +57,6 @@ export const MESSAGES = {
     UPDATED: "Category updated successfully.",
     DELETED: "Category deleted successfully.",
   },
-} as const;
-
-export const APP_CONFIG = {
-  NAME: "BlogNext",
-  DESCRIPTION: "Ideas, stories, and perspectives for curious minds.",
-  DEFAULT_LOCALE: "en",
-  PAGE_SIZE: 9,
-  CURRENT_FULL_YEAR: 2026,
 } as const;
 
 export const NAVIGATION_LABELS = {
@@ -66,6 +80,7 @@ export const BLOG_PAGE_CONTENT = {
   EMPTY: "No blog posts are available right now.",
   NO_BLOGS_FOUND: "No articles found",
   FALLBACK_NO_BLOGS_FOUND: "Try a different search term.",
+  BACK_TO_HOME:"Back To Home"
 } as const;
 
 export const BLOG_DETAILS_CONTENT = {
