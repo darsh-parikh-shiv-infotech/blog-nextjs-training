@@ -5,9 +5,11 @@ export type Blog = {
   description: string;
   category: string;
   author: string;
-  publishedAt: string;
+  ownerId: string | null;
+  createdAt: string;
+  updatedAt: string;
   readTime: string;
-  accentClass: string;
+  accentClass?: string;
   content: string[];
 };
 

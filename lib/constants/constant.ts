@@ -27,6 +27,10 @@ export const AUTH_API_ROUTES = {
   ME: "/api/auth/me",
 } as const;
 
+export const BLOG_API_ROUTES = {
+  BLOGS: "/blogs",
+} as const;
+
 export const getBlogDetailsRoute = (slug: string) => `${ROUTES.BLOGS}/${slug}`;
 
 export const getMyBlogEditRoute = (id: string) =>
