@@ -44,7 +44,7 @@ export const MESSAGES = {
     REQUIRED_FIELD: "This field is required.",
     INVALID_EMAIL: "Please enter a valid email address.",
   },
-  
+
   API: {
     USER_FETCH_FAILED: "Unable to retrieve user.",
     USER_CREATE_FAILED: "Unable to create user.",
@@ -66,6 +66,9 @@ export const MESSAGES = {
     DELETED: "Blog post deleted successfully.",
     NOT_FOUND: "The requested blog post could not be found.",
     CREATE_FAILED: "Unable to create your blog. Please try again.",
+    UPDATE_FAILED: "Unable to update your blog. Please try again.",
+    DELETE_FAILED: "Unable to delete your blog. Please try again.",
+    UNAUTHORIZED_ACTION: "You are not allowed to modify this blog.",
   },
 } as const;
 
@@ -168,7 +171,6 @@ export const MY_BLOGS_CONTENT = {
   CREATE_FIRST_BLOG: "Create your first blog",
 } as const;
 
-
 export const BLOG_FORM_CONTENT = {
   TITLE: "Create a new blog",
   DESCRIPTION: "Share your ideas, experiences, and stories with the world.",
@@ -185,4 +187,8 @@ export const BLOG_FORM_CONTENT = {
   SUBMITTING: "Creating blog...",
   CANCEL: "Cancel",
   BACK: "Back to My Blogs",
+  EDIT_TITLE: "Edit your blog",
+  EDIT_DESCRIPTION: "Make changes to your article.",
+  UPDATE: "Save changes",
+  UPDATING: "Saving changes...",
 } as const;

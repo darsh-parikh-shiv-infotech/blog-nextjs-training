@@ -82,11 +82,12 @@ async function MyBlogsContent({ searchParams }: MyBlogContentPageProps) {
             {blogs.length} {MY_BLOGS_CONTENT.BLOG_COUNT}
           </p>
 
-          <BlogGrid blogs={paginatedBlogs} />
+          <BlogGrid blogs={paginatedBlogs} showOwnerActions />
+
           <div className="mt-10 flex flex-col items-center justify-between gap-4 sm:flex-row">
             <p className="text-sm text-muted-foreground">
               Showing {startIndex + 1}–{startIndex + paginatedBlogs.length} of{" "}
-              {paginatedBlogs.length} {BLOG_PAGE_CONTENT.TITLE}
+              {blogs.length} {BLOG_PAGE_CONTENT.TITLE}
             </p>
 
             <div className="flex items-center gap-2">

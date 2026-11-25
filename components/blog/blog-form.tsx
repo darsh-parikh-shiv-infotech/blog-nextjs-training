@@ -1,9 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { toast } from "sonner";
 
@@ -21,6 +21,7 @@ import {
   createBlogSchema,
   type BlogFormValues,
 } from "@/lib/validations/blog.schema";
+
 import { getBlogContentText } from "@/lib/utils/blog-content";
 
 interface BlogFormProps {
@@ -32,46 +33,71 @@ interface BlogFormProps {
   }>;
 }
 
+const EMPTY_FORM_VALUES: BlogFormValues = {
+  title: "",
+  description: "",
+  category: "",
+  imageUrl: "",
+  content: "",
+};
+
 export function BlogForm({ mode, initialValues, onSubmit }: BlogFormProps) {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const defaultValues: BlogFormValues = {
+    ...EMPTY_FORM_VALUES,
+    ...initialValues,
+  };
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    control,
+    setValue,
+    formState: { errors },
+  } = useForm<BlogFormValues>({
+    resolver: yupResolver(createBlogSchema),
+    defaultValues,
+  });
+
+  useEffect(() => {
+    reset({
+      ...EMPTY_FORM_VALUES,
+      ...initialValues,
+    });
+  }, [initialValues, reset]);
+
+  const content = useWatch({ control, name: "content" }) ?? "";
+
   const submitClickHandler = async (values: BlogFormValues) => {
     try {
       setIsSubmitting(true);
+
       const result = await onSubmit(values);
 
-      if (result.success) {
-        toast.success(result.message);
-        router.push(ROUTES.MY_BLOGS);
-      } else {
+      if (!result.success) {
         toast.error(result.message);
+        return;
       }
+
+      toast.success(result.message);
+
+      // Clear Create form or update Edit form state.
+      reset(mode === "create" ? EMPTY_FORM_VALUES : values);
+
+      // Refresh server-rendered data.
+      router.refresh();
+
+      // Navigate back to the user's blogs.
+      router.push(ROUTES.MY_BLOGS);
     } catch {
       toast.error(MESSAGES.COMMON.SOMETHING_WENT_WRONG);
     } finally {
       setIsSubmitting(false);
     }
   };
-  const {
-    register,
-    handleSubmit,
-    getValues,
-    setValue,
-    watch,
-    formState: { errors },
-  } = useForm<BlogFormValues>({
-    resolver: yupResolver(createBlogSchema),
-    defaultValues: {
-      title: initialValues?.title ?? "",
-      description: initialValues?.description ?? "",
-      category: initialValues?.category ?? "",
-      imageUrl: initialValues?.imageUrl ?? "",
-      content: initialValues?.content ?? "",
-    },
-  });
-
-  const content = watch("content");
 
   return (
     <form onSubmit={handleSubmit(submitClickHandler)} className="space-y-6">
@@ -127,34 +153,29 @@ export function BlogForm({ mode, initialValues, onSubmit }: BlogFormProps) {
         )}
       </div>
 
-      {/* Image */}
+      {/* Cover Image */}
       <div className="space-y-2">
-        <Label>{BLOG_FORM_CONTENT.FIELDS.CONTENT}</Label>
-
         <BaseTextField
           label="Cover image URL"
           placeholder="https://example.com/image.jpg"
           {...register("imageUrl")}
           error={errors.imageUrl?.message}
         />
-
-        {errors.imageUrl && (
-          <p className="text-sm text-destructive">{errors.imageUrl.message}</p>
-        )}
       </div>
 
-      {/* Content */}
+      {/* Rich Text Content */}
       <div className="space-y-2">
         <Label>{BLOG_FORM_CONTENT.FIELDS.CONTENT}</Label>
 
         <BlogEditor
-          initialContent={getValues("content")}
+          content={content}
           onChange={(html) => {
             setValue("content", html, {
               shouldDirty: true,
               shouldValidate: true,
             });
           }}
+          placeholder={BLOG_FORM_CONTENT.FIELDS.CONTENT_PLACEHOLDER}
         />
 
         {errors.content && (
@@ -176,9 +197,15 @@ export function BlogForm({ mode, initialValues, onSubmit }: BlogFormProps) {
         <BaseButton
           type="submit"
           isLoading={isSubmitting}
-          loadingText={BLOG_FORM_CONTENT.SUBMITTING}
+          loadingText={
+            mode === "edit"
+              ? BLOG_FORM_CONTENT.UPDATING
+              : BLOG_FORM_CONTENT.SUBMITTING
+          }
         >
-          {BLOG_FORM_CONTENT.SUBMIT}
+          {mode === "edit"
+            ? BLOG_FORM_CONTENT.UPDATE
+            : BLOG_FORM_CONTENT.SUBMIT}
         </BaseButton>
       </div>
     </form>

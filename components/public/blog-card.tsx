@@ -1,15 +1,20 @@
 import Link from "next/link";
 
-import { getBlogDetailsRoute } from "@/lib/constants/constant";
+import {
+  getBlogDetailsRoute,
+  getMyBlogEditRoute,
+} from "@/lib/constants/constant";
 import type { Blog } from "@/lib/types/common.types";
+import { DeleteBlogButton } from "../blog/delete-blog-button";
 
 type BlogCardProps = {
   blog: Blog;
+  showOwnerActions?: boolean;
 };
 
-export function BlogCard({ blog }: BlogCardProps) {
-  const dateValue = blog.createdAt || 
-    (blog as Blog & { publishedAt?: string }).publishedAt;
+export function BlogCard({ blog, showOwnerActions = false }: BlogCardProps) {
+  const dateValue =
+    blog.createdAt || (blog as Blog & { publishedAt?: string }).publishedAt;
 
   const formattedDate = dateValue
     ? new Date(dateValue).toLocaleDateString("en-US", {
@@ -19,8 +24,7 @@ export function BlogCard({ blog }: BlogCardProps) {
       })
     : "";
 
-  const accentClass =
-    blog.accentClass ?? "from-stone-200 to-stone-400";
+  const accentClass = blog.accentClass ?? "from-stone-200 to-stone-400";
 
   return (
     <article className="group">
@@ -57,6 +61,17 @@ export function BlogCard({ blog }: BlogCardProps) {
           </p>
         </div>
       </Link>
+      {showOwnerActions && (
+        <div className="mt-4 flex items-center gap-2 border-t pt-4">
+          <Link
+            href={getMyBlogEditRoute(blog.id)}
+            className="inline-flex h-9 items-center justify-center rounded-md border px-4 text-sm font-medium transition-colors hover:bg-muted"
+          >
+            Edit
+          </Link>
+          <DeleteBlogButton blogId={blog.id} blogTitle={blog.title} />
+        </div>
+      )}
     </article>
   );
 }

@@ -7,8 +7,18 @@ import {
 } from "@/lib/constants/constant";
 import { getCurrentUser } from "@/lib/utils/utils";
 import { LogoutButton } from "@/components/auth/logout-button";
+import { Suspense } from "react";
+import Loader from "../common/Loader";
 
-export async function SiteHeader() {
+export function SiteHeader() {
+  return (
+    <Suspense fallback={<Loader />}>
+      <SiteHeaderContent />
+    </Suspense>
+  );
+}
+
+async function SiteHeaderContent() {
   const user = await getCurrentUser();
 
   return (

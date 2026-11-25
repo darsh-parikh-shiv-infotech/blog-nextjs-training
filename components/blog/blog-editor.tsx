@@ -1,5 +1,7 @@
 "use client";
 
+import { useEffect } from "react";
+
 import { useEditor, EditorContent, useEditorState } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import UnderlineExtension from "@tiptap/extension-underline";
@@ -12,13 +14,13 @@ import {
 } from "lucide-react";
 
 interface BlogEditorProps {
-  initialContent?: string;
+  content: string;
   onChange: (html: string) => void;
   placeholder?: string;
 }
 
 export function BlogEditor({
-  initialContent = "",
+  content,
   onChange,
   placeholder = "Start writing your story...",
 }: BlogEditorProps) {
@@ -35,14 +37,13 @@ export function BlogEditor({
       UnderlineExtension,
     ],
 
-    content: initialContent,
+    content,
 
     immediatelyRender: false,
 
     editorProps: {
       attributes: {
-        class:
-          "min-h-75 px-4 py-4 outline-none focus:outline-none",
+        class: "min-h-75 px-4 py-4 outline-none focus:outline-none",
         "aria-label": "Blog content editor",
       },
     },
@@ -51,6 +52,19 @@ export function BlogEditor({
       onChange(editor.getHTML());
     },
   });
+
+  // Synchronize external form changes with Tiptap.
+  useEffect(() => {
+    if (!editor) return;
+
+    const currentContent = editor.getHTML();
+
+    if (currentContent !== content) {
+      editor.commands.setContent(content || "", {
+        emitUpdate: false,
+      });
+    }
+  }, [editor, content]);
 
   const editorState = useEditorState({
     editor,
@@ -64,9 +78,7 @@ export function BlogEditor({
   });
 
   if (!editor) {
-    return (
-      <div className="min-h-75 animate-pulse rounded-lg bg-muted" />
-    );
+    return <div className="min-h-75 animate-pulse rounded-lg bg-muted" />;
   }
 
   const formattingButtons = [

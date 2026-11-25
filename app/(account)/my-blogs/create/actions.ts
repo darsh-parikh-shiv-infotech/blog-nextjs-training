@@ -60,6 +60,7 @@ export async function createBlogAction(
       title,
       description: validatedValues.description.trim(),
       category: validatedValues.category,
+      imageUrl: validatedValues.imageUrl || "",
       author: user.name,
       ownerId: user.id,
       createdAt: now,

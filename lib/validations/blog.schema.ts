@@ -17,17 +17,26 @@ export const createBlogSchema = yup.object({
     .min(20, "Description must contain at least 20 characters.")
     .max(250, "Description cannot exceed 250 characters."),
 
-  category: yup.string().required(VALIDATION_MESSAGES.REQUIRED_FIELD),
+  category: yup
+    .string()
+    .required(VALIDATION_MESSAGES.REQUIRED_FIELD),
 
   imageUrl: yup
     .string()
+    .transform((value) => (value === "" ? undefined : value))
     .url("Please enter a valid image URL.")
-    .nullable()
     .optional(),
 
   content: yup
     .string()
-    .required(VALIDATION_MESSAGES.REQUIRED_FIELD),
+    .required(VALIDATION_MESSAGES.REQUIRED_FIELD)
+    .test(
+      "content-not-empty",
+      VALIDATION_MESSAGES.REQUIRED_FIELD,
+      (value) => {
+        return Boolean(value && value.replace(/<[^>]*>/g, "").trim());
+      },
+    ),
 });
 
 export type BlogFormValues = yup.InferType<typeof createBlogSchema>;

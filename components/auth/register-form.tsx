@@ -1,4 +1,3 @@
-
 "use client";
 
 import Link from "next/link";
@@ -21,6 +20,13 @@ import {
 import type { RegisterInput } from "@/lib/types/common.types";
 import { registerSchema } from "@/lib/validations/auth.schema";
 
+const EMPTY_FORM_VALUES = {
+  name: "",
+  email: "",
+  password: "",
+  confirmPassword: "",
+};
+
 export function RegisterForm() {
   const router = useRouter();
   const [submitting, setSubmitting] = useState(false);
@@ -28,15 +34,11 @@ export function RegisterForm() {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<RegisterInput>({
     resolver: yupResolver(registerSchema),
-    defaultValues: {
-      name: "",
-      email: "",
-      password: "",
-      confirmPassword: "",
-    },
+    defaultValues: EMPTY_FORM_VALUES,
   });
 
   async function onSubmit(values: RegisterInput) {
@@ -58,8 +60,11 @@ export function RegisterForm() {
         return;
       }
 
-      toast.success(result.message);
-      router.replace(ROUTES.MY_BLOGS);
+      if (result.success) {
+        reset(EMPTY_FORM_VALUES);
+        toast.success(result.message);
+        router.replace(ROUTES.MY_BLOGS);
+      }
       router.refresh();
     } catch {
       toast.error(MESSAGES.COMMON.NETWORK_ERROR);

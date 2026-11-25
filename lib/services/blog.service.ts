@@ -1,4 +1,3 @@
-
 import "server-only";
 
 import { BLOG_API_ROUTES, MESSAGES } from "@/lib/constants/constant";
@@ -32,9 +31,7 @@ export async function getPublishedBlogs(): Promise<Blog[]> {
   return getBlogs();
 }
 
-export async function getBlogBySlug(
-  slug: string,
-): Promise<Blog | null> {
+export async function getBlogBySlug(slug: string): Promise<Blog | null> {
   const response = await fetch(
     `${BLOG_ENDPOINT}?slug=${encodeURIComponent(slug)}`,
     {
@@ -47,9 +44,7 @@ export async function getBlogBySlug(
   return blogs[0] ?? null;
 }
 
-export async function getBlogById(
-  id: string,
-): Promise<Blog | null> {
+export async function getBlogById(id: string): Promise<Blog | null> {
   const response = await fetch(`${BLOG_ENDPOINT}/${id}`, {
     cache: "no-store",
   });
@@ -61,9 +56,7 @@ export async function getBlogById(
   return handleResponse<Blog>(response);
 }
 
-export async function getBlogsByOwner(
-  ownerId: string,
-): Promise<Blog[]> {
+export async function getBlogsByOwner(ownerId: string): Promise<Blog[]> {
   const response = await fetch(
     `${BLOG_ENDPOINT}?ownerId=${encodeURIComponent(ownerId)}`,
     {
@@ -84,4 +77,29 @@ export async function createBlog(blog: Blog): Promise<Blog> {
   });
 
   return handleResponse<Blog>(response);
+}
+
+export async function updateBlog(
+  id: string,
+  blog: Partial<Blog>,
+): Promise<Blog> {
+  const response = await fetch(`${BLOG_ENDPOINT}/${id}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(blog),
+  });
+
+  return handleResponse<Blog>(response);
+}
+
+export async function deleteBlog(id: string): Promise<void> {
+  const response = await fetch(`${BLOG_ENDPOINT}/${id}`, {
+    method: "DELETE",
+  });
+
+  if (!response.ok) {
+    throw new Error(MESSAGES.BLOG.DELETE_FAILED);
+  }
 }
