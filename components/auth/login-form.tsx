@@ -1,4 +1,3 @@
-
 "use client";
 
 import Link from "next/link";
@@ -21,6 +20,11 @@ import {
 import type { LoginInput } from "@/lib/types/common.types";
 import { loginSchema } from "@/lib/validations/auth.schema";
 
+const EMPTY_FORM_VALUES = {
+  email: "",
+  password: "",
+};
+
 export function LoginForm() {
   const router = useRouter();
   const [submitting, setSubmitting] = useState(false);
@@ -28,13 +32,11 @@ export function LoginForm() {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<LoginInput>({
     resolver: yupResolver(loginSchema),
-    defaultValues: {
-      email: "",
-      password: "",
-    },
+    defaultValues: EMPTY_FORM_VALUES,
   });
 
   async function onSubmit(values: LoginInput) {
@@ -56,8 +58,11 @@ export function LoginForm() {
         return;
       }
 
-      toast.success(result.message);
-      router.replace(ROUTES.MY_BLOGS);
+      if (result.success) {
+        reset(EMPTY_FORM_VALUES);
+        toast.success(result.message);
+        router.replace(ROUTES.MY_BLOGS);
+      }
       router.refresh();
     } catch {
       toast.error(MESSAGES.COMMON.NETWORK_ERROR);
@@ -69,9 +74,7 @@ export function LoginForm() {
   return (
     <div className="rounded-xl border bg-background p-6 shadow-sm sm:p-8">
       <div className="mb-8 text-center">
-        <h1 className="text-2xl font-semibold">
-          {AUTH_CONTENT.LOGIN.TITLE}
-        </h1>
+        <h1 className="text-2xl font-semibold">{AUTH_CONTENT.LOGIN.TITLE}</h1>
 
         <p className="mt-2 text-sm text-muted-foreground">
           {AUTH_CONTENT.LOGIN.DESCRIPTION}

@@ -1,13 +1,15 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { BLOGS } from "@/lib/constants/blog.data";
+
+import BackButton from "@/components/common/BackButton";
 import {
   APP_CONFIG,
   BLOG_DETAILS_CONTENT,
   ROUTES,
 } from "@/lib/constants/constant";
-import BackButton from "@/components/common/BackButton";
+import { getBlogBySlug } from "@/lib/services/blog.service";
+import { sanitizeBlogHtml } from "@/lib/utils/sanitize-blog-html";
 
 interface BlogDetailsPageProps {
   params: Promise<{ slug: string }>;
@@ -17,7 +19,7 @@ export async function generateMetadata({
   params,
 }: BlogDetailsPageProps): Promise<Metadata> {
   const { slug } = await params;
-  const blog = BLOGS.find((item) => item.slug === slug);
+  const blog = await getBlogBySlug(slug);
 
   if (!blog) {
     return {
@@ -31,22 +33,30 @@ export async function generateMetadata({
   };
 }
 
-export default function BlogDetailsPage({ params }: BlogDetailsPageProps) {
+export default async function BlogDetailsPage({
+  params,
+}: BlogDetailsPageProps) {
+  const { slug } = await params;
+
   return (
     <Suspense fallback={<BlogDetailsSkeleton />}>
-      {params.then(({ slug }) => (
-        <BlogDetailsContent slug={slug} />
-      ))}
+      <BlogDetailsContent slug={slug} />
     </Suspense>
   );
 }
 
 async function BlogDetailsContent({ slug }: { slug: string }) {
-  const blog = BLOGS.find((item) => item.slug === slug);
+  const blog = await getBlogBySlug(slug);
 
   if (!blog) {
     notFound();
   }
+
+  const formattedDate = new Date(blog.createdAt).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
 
   return (
     <article className="mx-auto max-w-3xl px-6 py-16">
@@ -68,25 +78,26 @@ async function BlogDetailsContent({ slug }: { slug: string }) {
           {blog.description}
         </p>
 
-        <div className="mt-6 flex gap-2 text-sm text-[#96938a]">
+        <div className="mt-6 flex flex-wrap gap-2 text-sm text-[#96938a]">
           <span>{BLOG_DETAILS_CONTENT.WRITTEN_BY}</span>
           <span>{blog.author}</span>
           <span>·</span>
-          <span>{blog.publishedAt}</span>
+          <span>{formattedDate}</span>
           <span>·</span>
           <span>{blog.readTime}</span>
         </div>
       </div>
 
       <div
-        className={`mt-10 aspect-video rounded-2xl bg-linear-to-br ${blog.accentClass}`}
+        className={`mt-10 aspect-video rounded-2xl bg-linear-to-br ${blog.accentClass ?? "from-stone-200 to-stone-400"}`}
       />
 
-      <div className="mt-10 space-y-6 text-base leading-8 text-[#55534c]">
-        {blog.content.map((paragraph, index) => (
-          <p key={index}>{paragraph}</p>
-        ))}
-      </div>
+      <div
+        className="mt-10 space-y-6 text-base leading-8 text-[#55534c]"
+        dangerouslySetInnerHTML={{
+          __html: sanitizeBlogHtml(blog.content),
+        }}
+      />
     </article>
   );
 }

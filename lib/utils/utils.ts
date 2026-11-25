@@ -5,7 +5,7 @@ import bcrypt from "bcryptjs";
 import { cache } from "react";
 import { AuthUser } from "../types/common.types";
 import { getSession } from "./session";
-import { getUserById } from "../api/users";
+import { getUserById } from "../services/users";
 import { redirect } from "next/navigation";
 import { ROUTES } from "../constants/constant";
 
@@ -53,3 +53,4 @@ export async function requireUser() {
 
   return user;
 }
+

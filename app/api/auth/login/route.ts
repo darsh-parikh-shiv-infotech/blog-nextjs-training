@@ -1,4 +1,4 @@
-import { getUserByEmail } from "@/lib/api/users";
+import { getUserByEmail } from "@/lib/services/users";
 import { MESSAGES, StatusCodes } from "@/lib/constants/constant";
 import { createSession } from "@/lib/utils/session";
 import { verifyPassword } from "@/lib/utils/utils";

@@ -5,10 +5,13 @@ export type Blog = {
   description: string;
   category: string;
   author: string;
-  publishedAt: string;
+  ownerId: string | null;
+  imageUrl?: string;
+  createdAt: string;
+  updatedAt: string;
   readTime: string;
-  accentClass: string;
-  content: string[];
+  accentClass?: string;
+  content: string | string[];
 };
 
 export interface User {
