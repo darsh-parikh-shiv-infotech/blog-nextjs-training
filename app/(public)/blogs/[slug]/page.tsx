@@ -1,4 +1,3 @@
-
 import { Suspense } from "react";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
@@ -10,6 +9,7 @@ import {
   ROUTES,
 } from "@/lib/constants/constant";
 import { getBlogBySlug } from "@/lib/services/blog.service";
+import { sanitizeBlogHtml } from "@/lib/utils/sanitize-blog-html";
 
 interface BlogDetailsPageProps {
   params: Promise<{ slug: string }>;
@@ -52,14 +52,11 @@ async function BlogDetailsContent({ slug }: { slug: string }) {
     notFound();
   }
 
-  const formattedDate = new Date(blog.createdAt).toLocaleDateString(
-    "en-US",
-    {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    },
-  );
+  const formattedDate = new Date(blog.createdAt).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
 
   return (
     <article className="mx-auto max-w-3xl px-6 py-16">
@@ -95,11 +92,12 @@ async function BlogDetailsContent({ slug }: { slug: string }) {
         className={`mt-10 aspect-video rounded-2xl bg-linear-to-br ${blog.accentClass ?? "from-stone-200 to-stone-400"}`}
       />
 
-      <div className="mt-10 space-y-6 text-base leading-8 text-[#55534c]">
-        {blog.content.map((paragraph, index) => (
-          <p key={index}>{paragraph}</p>
-        ))}
-      </div>
+      <div
+        className="mt-10 space-y-6 text-base leading-8 text-[#55534c]"
+        dangerouslySetInnerHTML={{
+          __html: sanitizeBlogHtml(blog.content),
+        }}
+      />
     </article>
   );
 }

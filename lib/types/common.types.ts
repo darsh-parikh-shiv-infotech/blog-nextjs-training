@@ -6,11 +6,12 @@ export type Blog = {
   category: string;
   author: string;
   ownerId: string | null;
+  imageUrl?: string;
   createdAt: string;
   updatedAt: string;
   readTime: string;
   accentClass?: string;
-  content: string[];
+  content: string | string[];
 };
 
 export interface User {

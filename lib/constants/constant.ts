@@ -65,10 +65,12 @@ export const MESSAGES = {
     UPDATED: "Blog post updated successfully.",
     DELETED: "Blog post deleted successfully.",
     NOT_FOUND: "The requested blog post could not be found.",
+    CREATE_FAILED: "Unable to create your blog. Please try again.",
   },
 } as const;
 
 export const VALIDATION_MESSAGES = {
+  REQUIRED_FIELD: "Field is required.",
   EMAIL_REQUIRED: "Email is required.",
   EMAIL_INVALID: "Enter a valid email address.",
   PASSWORD_REQUIRED: "Password is required.",
@@ -153,4 +155,34 @@ export const COMMON_UI_STRING = {
   LOADING: "Loading...",
   LOGGING_OUT: "Logging out...",
   CHECKING_AUTH: "Checking authentication...",
+} as const;
+
+export const MY_BLOGS_CONTENT = {
+  TITLE: "My Blogs",
+  GREETING: "Welcome,",
+  CREATE_BLOG: "Create Blog",
+  BLOG_COUNT: "blogs",
+  EMPTY_TITLE: "Your writing space is ready",
+  EMPTY_DESCRIPTION:
+    "You haven't created any blogs yet. Start writing your first article.",
+  CREATE_FIRST_BLOG: "Create your first blog",
+} as const;
+
+
+export const BLOG_FORM_CONTENT = {
+  TITLE: "Create a new blog",
+  DESCRIPTION: "Share your ideas, experiences, and stories with the world.",
+  FIELDS: {
+    TITLE: "Blog title",
+    TITLE_PLACEHOLDER: "Give your blog a meaningful title",
+    DESCRIPTION: "Short description",
+    DESCRIPTION_PLACEHOLDER: "What is this article about?",
+    CATEGORY: "Category",
+    CONTENT: "Your story",
+    CONTENT_PLACEHOLDER: "Start writing your story...",
+  },
+  SUBMIT: "Create blog",
+  SUBMITTING: "Creating blog...",
+  CANCEL: "Cancel",
+  BACK: "Back to My Blogs",
 } as const;

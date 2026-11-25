@@ -73,3 +73,15 @@ export async function getBlogsByOwner(
 
   return handleResponse<Blog[]>(response);
 }
+
+export async function createBlog(blog: Blog): Promise<Blog> {
+  const response = await fetch(BLOG_ENDPOINT, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(blog),
+  });
+
+  return handleResponse<Blog>(response);
+}

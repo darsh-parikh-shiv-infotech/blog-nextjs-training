@@ -16,8 +16,8 @@
       "readTime": "6 min read",
       "title": "The quiet power of thoughtful design",
       "description": "A closer look at the small decisions that make digital experiences feel clear, useful, and human.",
-      "author": "Olivia Rhye",
-      "ownerId": null,
+      "author": "Darsh",
+      "ownerId": "QENinJPtTlM",
       "createdAt": "2026-05-18T10:00:00.000Z",
       "updatedAt": "2026-05-18T10:00:00.000Z",
       "accentClass": "from-amber-100 via-orange-50 to-rose-100",
@@ -34,8 +34,8 @@
       "readTime": "8 min read",
       "title": "Building for the web, one good decision at a time",
       "description": "Good engineering is rarely about clever tricks. It is about making the next decision easier.",
-      "author": "Phoenix Baker",
-      "ownerId": null,
+      "author": "Darsh",
+      "ownerId": "QENinJPtTlM",
       "createdAt": "2026-05-18T10:00:00.000Z",
       "updatedAt": "2026-05-18T10:00:00.000Z",
       "accentClass": "from-sky-100 via-cyan-50 to-indigo-100",
@@ -52,8 +52,8 @@
       "readTime": "5 min read",
       "title": "Making room for a little more curiosity",
       "description": "Why the best ideas often begin when we slow down, look around, and ask better questions.",
-      "author": "Lana Steiner",
-      "ownerId": null,
+      "author": "Darsh",
+      "ownerId": "QENinJPtTlM",
       "createdAt": "2026-05-18T10:00:00.000Z",
       "updatedAt": "2026-05-18T10:00:00.000Z",
       "accentClass": "from-emerald-100 via-lime-50 to-yellow-100",
@@ -278,6 +278,19 @@
         "Not every attempt will produce the result we expect, but each experiment can reveal something useful.",
         "The important part is to observe the outcome, understand what happened, and use that knowledge in the next attempt."
       ]
+    },
+    {
+      "id": "O8mIOAeXkcU",
+      "slug": "what-makes-modern-web-development-different-1795607884441",
+      "title": "What makes modern web development different",
+      "description": "A look at the tools, practices, and architectural decisions shaping today's web applications.",
+      "category": "Development",
+      "author": "Darsh",
+      "ownerId": "QENinJPtTlM",
+      "createdAt": "2026-11-25T11:58:04.442Z",
+      "updatedAt": "2026-11-25T11:58:04.442Z",
+      "readTime": "1 min read",
+      "content": "<p><strong><em>Modern web development</em></strong> involves more than writing HTML, CSS, and JavaScript. <u>Developers</u> work with frameworks, rendering strategies, APIs, and a growing ecosystem of tools.</p><p></p><p>Choosing the right tools is important, but understanding the underlying concepts is even more valuable.</p><p></p><p>The <em>best development </em>workflow balances performance, maintainability, accessibility, and the needs of the people using the application.</p>"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
