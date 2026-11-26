@@ -1,4 +1,3 @@
-
 import BackButton from "@/components/common/BackButton";
 import { BlogGrid } from "@/components/public/blog-grid";
 import {
@@ -25,9 +24,7 @@ interface BlogListingContentProps {
   };
 }
 
-export default async function BlogsPage({
-  searchParams,
-}: BlogsPageProps) {
+export default async function BlogsPage({ searchParams }: BlogsPageProps) {
   const params = await searchParams;
 
   return (
@@ -37,30 +34,25 @@ export default async function BlogsPage({
   );
 }
 
-async function BlogListingContent({
-  searchParams,
-}: BlogListingContentProps) {
+async function BlogListingContent({ searchParams }: BlogListingContentProps) {
   const blogs = await getBlogs();
 
   const requestedPage = Number(searchParams.page);
 
   const currentPage =
-    Number.isInteger(requestedPage) && requestedPage > 0
-      ? requestedPage
-      : 1;
+    Number.isInteger(requestedPage) && requestedPage > 0 ? requestedPage : 1;
 
   const searchQuery = searchParams.q?.trim() ?? "";
 
   const filteredBlogs = blogs.filter((blog) => {
-    const searchableContent =
-      `${blog.title} ${blog.description}`.toLowerCase();
+    const searchableContent = `${blog.title} ${blog.content}`
+      .toLowerCase()
+      .replace(/<[^>]*>/g, " ");
 
     return searchableContent.includes(searchQuery.toLowerCase());
   });
 
-  const totalPages = Math.ceil(
-    filteredBlogs.length / APP_CONFIG.PAGE_SIZE,
-  );
+  const totalPages = Math.ceil(filteredBlogs.length / APP_CONFIG.PAGE_SIZE);
 
   const safePage = Math.min(currentPage, Math.max(totalPages, 1));
 
@@ -85,10 +77,7 @@ async function BlogListingContent({
 
   return (
     <section className="container mx-auto max-w-7xl px-6 py-10 lg:px-10">
-      <BackButton
-        href={ROUTES.HOME}
-        message={BLOG_PAGE_CONTENT.BACK_TO_HOME}
-      />
+      <BackButton href={ROUTES.HOME} message={BLOG_PAGE_CONTENT.BACK_TO_HOME} />
 
       <div className="mb-8">
         <h1 className="mt-3 text-4xl font-semibold tracking-[-0.04em]">
@@ -123,8 +112,7 @@ async function BlogListingContent({
 
           <div className="mt-10 flex flex-col items-center justify-between gap-4 sm:flex-row">
             <p className="text-sm text-muted-foreground">
-              Showing {startIndex + 1}–
-              {startIndex + paginatedBlogs.length} of{" "}
+              Showing {startIndex + 1}–{startIndex + paginatedBlogs.length} of{" "}
               {filteredBlogs.length} {BLOG_PAGE_CONTENT.TITLE}
             </p>
 

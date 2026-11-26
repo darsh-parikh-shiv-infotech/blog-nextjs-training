@@ -1,105 +1,123 @@
+
 import "server-only";
 
-import { BLOG_API_ROUTES, MESSAGES } from "@/lib/constants/constant";
+import {
+  fetchPosts,
+  fetchPostById,
+  fetchPostsByUser,
+  fetchUsers,
+  addPost,
+  updatePost,
+  removePost,
+  fetchUserById,
+} from "@/lib/services/dummyjson.service";
+
 import type { Blog } from "@/lib/types/common.types";
+import type { DummyJSONPost } from "@/lib/types/dummyjson.types";
+import { mapDummyJSONPostToBlog } from "@/lib/utils/blog-adapters";
+import { getBlogContentText } from "@/lib/utils/blog-content";
 
-const API_URL = process.env.JSON_SERVER_URL;
+async function getUsersMap() {
+  const { users } = await fetchUsers();
 
-if (!API_URL) {
-  throw new Error("JSON_SERVER_URL is not configured.");
-}
-
-const BLOG_ENDPOINT = `${API_URL}${BLOG_API_ROUTES.BLOGS}`;
-
-async function handleResponse<T>(response: Response): Promise<T> {
-  if (!response.ok) {
-    throw new Error(MESSAGES.COMMON.SOMETHING_WENT_WRONG);
-  }
-
-  return response.json();
+  return new Map(users.map((user) => [user.id, user]));
 }
 
 export async function getBlogs(): Promise<Blog[]> {
-  const response = await fetch(BLOG_ENDPOINT, {
-    cache: "no-store",
-  });
+  const [{ posts }, usersMap] = await Promise.all([
+    fetchPosts(0),
+    getUsersMap(),
+  ]);
 
-  return handleResponse<Blog[]>(response);
+  return posts.map((post) =>
+    mapDummyJSONPostToBlog(post, usersMap.get(post.userId)),
+  );
 }
 
 export async function getPublishedBlogs(): Promise<Blog[]> {
   return getBlogs();
 }
 
-export async function getBlogBySlug(slug: string): Promise<Blog | null> {
-  const response = await fetch(
-    `${BLOG_ENDPOINT}?slug=${encodeURIComponent(slug)}`,
-    {
-      cache: "no-store",
-    },
-  );
+export async function getBlogById(
+  id: string,
+): Promise<Blog | null> {
+  try {
+    const post = await fetchPostById(id);
+    const user = await fetchUserById(post.userId);
 
-  const blogs = await handleResponse<Blog[]>(response);
-
-  return blogs[0] ?? null;
+    return mapDummyJSONPostToBlog(post, user);
+  } catch {
+    return null;
+  }
 }
 
-export async function getBlogById(id: string): Promise<Blog | null> {
-  const response = await fetch(`${BLOG_ENDPOINT}/${id}`, {
-    cache: "no-store",
-  });
+export async function getBlogBySlug(
+  slug: string,
+): Promise<Blog | null> {
+  const match = slug.match(/-(\d+)$/);
 
-  if (response.status === 404) {
+  if (!match) {
     return null;
   }
 
-  return handleResponse<Blog>(response);
+  return getBlogById(match[1]);
 }
 
-export async function getBlogsByOwner(ownerId: string): Promise<Blog[]> {
-  const response = await fetch(
-    `${BLOG_ENDPOINT}?ownerId=${encodeURIComponent(ownerId)}`,
-    {
-      cache: "no-store",
-    },
+export async function getBlogsByOwner(
+  ownerId: string,
+): Promise<Blog[]> {
+  const [{ posts }, usersMap] = await Promise.all([
+    fetchPostsByUser(ownerId),
+    getUsersMap(),
+  ]);
+
+  return posts.map((post) =>
+    mapDummyJSONPostToBlog(post, usersMap.get(post.userId)),
   );
-
-  return handleResponse<Blog[]>(response);
 }
 
-export async function createBlog(blog: Blog): Promise<Blog> {
-  const response = await fetch(BLOG_ENDPOINT, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(blog),
+export async function createBlog(
+  blog: Blog,
+): Promise<Blog> {
+  const result = await addPost({
+    title: blog.title,
+    body: getBlogContentText(blog.content),
+    userId: Number(blog.ownerId),
+    tags: [blog.category.toLowerCase()],
   });
 
-  return handleResponse<Blog>(response);
+  return {
+    ...blog,
+    id: String(result.id),
+  };
 }
 
 export async function updateBlog(
   id: string,
   blog: Partial<Blog>,
 ): Promise<Blog> {
-  const response = await fetch(`${BLOG_ENDPOINT}/${id}`, {
-    method: "PATCH",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(blog),
-  });
+  const payload: Partial<DummyJSONPost> = {};
 
-  return handleResponse<Blog>(response);
+  if (blog.title !== undefined) {
+    payload.title = blog.title;
+  }
+
+  if (blog.content !== undefined) {
+    payload.body = getBlogContentText(blog.content);
+  }
+
+  if (blog.category !== undefined) {
+    payload.tags = [blog.category.toLowerCase()];
+  }
+
+  const result = await updatePost(id, payload);
+
+  return {
+    ...blog,
+    id: String(result.id),
+  } as Blog;
 }
 
 export async function deleteBlog(id: string): Promise<void> {
-  const response = await fetch(`${BLOG_ENDPOINT}/${id}`, {
-    method: "DELETE",
-  });
-
-  if (!response.ok) {
-    throw new Error(MESSAGES.BLOG.DELETE_FAILED);
-  }
+  await removePost(id);
 }

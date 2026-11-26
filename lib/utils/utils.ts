@@ -5,9 +5,9 @@ import bcrypt from "bcryptjs";
 import { cache } from "react";
 import { AuthUser } from "../types/common.types";
 import { getSession } from "./session";
-import { getUserById } from "../services/users";
 import { redirect } from "next/navigation";
 import { ROUTES } from "../constants/constant";
+import { fetchAuthenticatedUser } from "../services/dummyjson.service";
 
 const SALT_ROUNDS = 12;
 
@@ -30,17 +30,17 @@ export const getCurrentUser = cache(
       return null;
     }
 
-    const user = await getUserById(session.userId);
+    try {
+      const user = await fetchAuthenticatedUser(session.accessToken);
 
-    if (!user) {
+      return {
+        id: String(user.id),
+        name: `${user.firstName} ${user.lastName}`,
+        email: user.email,
+      };
+    } catch {
       return null;
     }
-
-    return {
-      id: user.id,
-      name: user.name,
-      email: user.email,
-    };
   },
 );
 

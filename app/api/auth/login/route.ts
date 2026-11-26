@@ -1,8 +1,8 @@
-import { getUserByEmail } from "@/lib/services/users";
-import { MESSAGES, StatusCodes } from "@/lib/constants/constant";
+import { loginToDummyJSON } from "@/lib/services/dummyjson.service";
 import { createSession } from "@/lib/utils/session";
-import { verifyPassword } from "@/lib/utils/utils";
 import { loginSchema } from "@/lib/validations/auth.schema";
+import { MESSAGES, StatusCodes } from "@/lib/constants/constant";
+
 import { NextResponse } from "next/server";
 import { ValidationError } from "yup";
 
@@ -15,34 +15,23 @@ export async function POST(request: Request) {
       stripUnknown: true,
     });
 
-    const user = await getUserByEmail(validatedData.email.toLowerCase());
-
-    if (!user) {
-      return NextResponse.json(
-        { message: MESSAGES.AUTH.INVALID_CREDENTIALS },
-        { status: StatusCodes.UNAUTHORIZED },
-      );
-    }
-
-    const isPasswordValid = await verifyPassword(
+    const user = await loginToDummyJSON(
+      validatedData.username,
       validatedData.password,
-      user.passwordHash,
     );
 
-    if (!isPasswordValid) {
-      return NextResponse.json(
-        { message: MESSAGES.AUTH.INVALID_CREDENTIALS },
-        { status: StatusCodes.UNAUTHORIZED },
-      );
-    }
-
-    await createSession(user.id);
+    await createSession(
+      String(user.id),
+      user.accessToken,
+      user.refreshToken,
+    );
 
     return NextResponse.json({
+      success: true,
       message: MESSAGES.AUTH.LOGIN_SUCCESS,
       user: {
-        id: user.id,
-        name: user.name,
+        id: String(user.id),
+        name: `${user.firstName} ${user.lastName}`,
         email: user.email,
       },
     });
@@ -50,6 +39,7 @@ export async function POST(request: Request) {
     if (error instanceof ValidationError) {
       return NextResponse.json(
         {
+          success: false,
           message: MESSAGES.COMMON.INVALID_FORM,
           errors: error.errors,
         },
@@ -57,8 +47,27 @@ export async function POST(request: Request) {
       );
     }
 
+    // DummyJSON responds with an error when credentials are incorrect.
+    if (
+      error instanceof Error &&
+      error.message.includes("DummyJSON request failed")
+    ) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: MESSAGES.AUTH.INVALID_CREDENTIALS,
+        },
+        { status: StatusCodes.UNAUTHORIZED },
+      );
+    }
+
+    console.error("Login error:", error);
+
     return NextResponse.json(
-      { message: MESSAGES.AUTH.SERVER_ERROR },
+      {
+        success: false,
+        message: MESSAGES.AUTH.SERVER_ERROR,
+      },
       { status: StatusCodes.INTERNAL_SERVER_ERROR },
     );
   }

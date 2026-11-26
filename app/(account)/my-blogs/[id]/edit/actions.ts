@@ -65,7 +65,6 @@ export async function updateBlogAction(
 
     const updatedBlog = {
       title: validatedValues.title.trim(),
-      description: validatedValues.description.trim(),
       category: validatedValues.category,
       imageUrl: validatedValues.imageUrl || "",
       content,

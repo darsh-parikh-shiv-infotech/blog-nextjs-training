@@ -2,7 +2,6 @@ export type Blog = {
   id: string;
   slug: string;
   title: string;
-  description: string;
   category: string;
   author: string;
   ownerId: string | null;
@@ -11,7 +10,7 @@ export type Blog = {
   updatedAt: string;
   readTime: string;
   accentClass?: string;
-  content: string | string[];
+  content: string;
 };
 
 export interface User {
@@ -29,7 +28,7 @@ export interface AuthUser {
 }
 
 export interface LoginInput {
-  email: string;
+  username: string;
   password: string;
 }
 

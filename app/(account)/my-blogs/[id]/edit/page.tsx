@@ -52,7 +52,6 @@ async function EditBlogContent({ params }: EditBlogPageProps) {
           mode="edit"
           initialValues={{
             title: blog.title,
-            description: blog.description,
             category: blog.category,
             imageUrl: blog.imageUrl ?? "",
             content: sanitizeBlogHtml(blog.content),

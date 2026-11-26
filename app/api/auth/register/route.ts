@@ -35,7 +35,7 @@ export async function POST(request: Request) {
       createdAt: new Date().toISOString(),
     });
 
-    await createSession(user.id);
+    await createSession(user.id,"null","null");
 
     return NextResponse.json(
       {

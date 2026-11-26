@@ -4,11 +4,10 @@ import * as yup from "yup";
 import { VALIDATION_MESSAGES } from "@/lib/constants/constant";
 
 export const loginSchema = yup.object({
-  email: yup
+  username: yup
     .string()
     .trim()
-    .email(VALIDATION_MESSAGES.EMAIL_INVALID)
-    .required(VALIDATION_MESSAGES.EMAIL_REQUIRED),
+    .required("Username is required."),
 
   password: yup
     .string()

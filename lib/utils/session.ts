@@ -4,8 +4,17 @@ import { cookies } from "next/headers";
 import { createSessionToken, verifySessionToken } from "./token";
 import { APP_CONFIG } from "../constants/constant";
 
-export async function createSession(userId: string) {
-  const token = await createSessionToken(userId);
+export async function createSession(
+  userId: string,
+  accessToken: string,
+  refreshToken: string,
+) {
+  const token = await createSessionToken(
+    userId,
+    accessToken,
+    refreshToken,
+  );
+
   const cookieStore = await cookies();
 
   cookieStore.set(APP_CONFIG.SESSION_COOKIE, token, {

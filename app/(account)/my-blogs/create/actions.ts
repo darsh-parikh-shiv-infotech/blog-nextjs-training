@@ -58,7 +58,6 @@ export async function createBlogAction(
       id: crypto.randomUUID(),
       slug,
       title,
-      description: validatedValues.description.trim(),
       category: validatedValues.category,
       imageUrl: validatedValues.imageUrl || "",
       author: user.name,
