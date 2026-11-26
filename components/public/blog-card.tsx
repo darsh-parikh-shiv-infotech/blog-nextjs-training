@@ -7,6 +7,7 @@ import {
 import type { Blog } from "@/lib/types/common.types";
 import { DeleteBlogButton } from "../blog/delete-blog-button";
 import { getBlogExcerpt } from "@/lib/utils/blog-content";
+import Image from "next/image";
 
 type BlogCardProps = {
   blog: Blog;
@@ -37,9 +38,27 @@ export function BlogCard({ blog, showOwnerActions = false }: BlogCardProps) {
             {blog.id.padStart(2, "0")}
           </span>
 
-          <span className="rounded-full border border-black/10 bg-white/45 px-3 py-1.5 text-[10px] font-semibold tracking-[0.15em] text-[#56564d]">
-            {blog.category.toUpperCase()}
-          </span>
+          <div
+            className={`relative flex aspect-[1.45] items-end overflow-hidden rounded-2xl bg-linear-to-br ${accentClass} p-6`}
+          >
+            {blog.imageUrl && (
+              <Image
+                src={blog.imageUrl}
+                alt={blog.title}
+                fill
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                className="object-cover transition-transform duration-500 group-hover:scale-105"
+              />
+            )}
+
+            <span className="absolute top-5 right-6 font-serif text-6xl text-black/10">
+              {blog.id.padStart(2, "0")}
+            </span>
+
+            <span className="relative z-10 rounded-full border border-black/10 bg-white/45 px-3 py-1.5 text-[10px] font-semibold tracking-[0.15em] text-[#56564d]">
+              {blog.category.toUpperCase()}
+            </span>
+          </div>
         </div>
 
         <div className="pt-5">
