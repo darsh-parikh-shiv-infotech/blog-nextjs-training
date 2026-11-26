@@ -95,7 +95,7 @@ export async function loginToDummyJSON(
       body: JSON.stringify({
         username,
         password,
-        expiresInMins: 60,
+        expiresInMins: 10080,
       }),
     },
   );

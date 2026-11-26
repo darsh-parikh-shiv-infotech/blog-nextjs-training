@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { toast } from "sonner";
@@ -20,8 +20,8 @@ import {
 import type { LoginInput } from "@/lib/types/common.types";
 import { loginSchema } from "@/lib/validations/auth.schema";
 
-const EMPTY_FORM_VALUES = {
-  email: "",
+const EMPTY_FORM_VALUES: LoginInput = {
+  username: "",
   password: "",
 };
 
@@ -38,6 +38,13 @@ export function LoginForm() {
     resolver: yupResolver(loginSchema),
     defaultValues: EMPTY_FORM_VALUES,
   });
+
+  useLayoutEffect(() => {
+    return () => {
+      reset(EMPTY_FORM_VALUES);
+      setSubmitting(false);
+    };
+  }, [reset]);
 
   async function onSubmit(values: LoginInput) {
     setSubmitting(true);
@@ -58,11 +65,10 @@ export function LoginForm() {
         return;
       }
 
-      if (result.success) {
-        reset(EMPTY_FORM_VALUES);
-        toast.success(result.message);
-        router.replace(ROUTES.MY_BLOGS);
-      }
+      reset(EMPTY_FORM_VALUES);
+      toast.success(result.message);
+
+      router.replace(ROUTES.MY_BLOGS);
       router.refresh();
     } catch {
       toast.error(MESSAGES.COMMON.NETWORK_ERROR);
@@ -83,13 +89,13 @@ export function LoginForm() {
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
         <BaseTextField
-          id="email"
-          label={AUTH_CONTENT.FIELDS.EMAIL}
-          type="email"
-          placeholder={AUTH_CONTENT.FIELDS.EMAIL_PLACEHOLDER}
-          autoComplete="email"
-          error={errors.email?.message}
-          {...register("email")}
+          id="username"
+          label={AUTH_CONTENT.FIELDS.USERNAME}
+          type="text"
+          placeholder={AUTH_CONTENT.FIELDS.USERNAME_PLACEHOLDER}
+          autoComplete="username"
+          error={errors.username?.message}
+          {...register("username")}
         />
 
         <BaseTextField
@@ -112,15 +118,29 @@ export function LoginForm() {
         </BaseButton>
       </form>
 
-      <p className="mt-6 text-center text-sm text-muted-foreground">
-        {AUTH_CONTENT.LOGIN.NO_ACCOUNT}{" "}
-        <Link
-          href={ROUTES.REGISTER}
-          className="font-medium text-foreground underline underline-offset-4"
-        >
-          {AUTH_CONTENT.LOGIN.REGISTER_LINK}
-        </Link>
-      </p>
+      <div className="mt-6 rounded-lg border bg-muted/40 p-4">
+        <p className="text-sm font-medium">Demo credentials</p>
+
+        <div className="mt-2 space-y-1 text-sm text-muted-foreground">
+          <p>
+            Username:{" "}
+            <span className="font-medium text-foreground">
+              {AUTH_CONTENT.LOGIN.DEMO_CREDENTIALS.USERNAME}
+            </span>
+          </p>
+
+          <p>
+            Password:{" "}
+            <span className="font-medium text-foreground">
+              {AUTH_CONTENT.LOGIN.DEMO_CREDENTIALS.PASSWORD}
+            </span>
+          </p>
+        </div>
+
+        <p className="mt-3 text-xs text-muted-foreground">
+          This application uses a demo authentication API.
+        </p>
+      </div>
 
       <p className="mt-6 text-center text-sm text-muted-foreground">
         <Link

@@ -51,7 +51,7 @@ export const MESSAGES = {
   },
 
   AUTH: {
-    INVALID_CREDENTIALS: "Invalid email or password.",
+    INVALID_CREDENTIALS: "Invalid username or password.",
     EMAIL_ALREADY_EXISTS: "An account with this email already exists.",
     REGISTRATION_SUCCESS: "Your account has been created successfully.",
     LOGIN_SUCCESS: "Welcome back!",
@@ -91,8 +91,15 @@ export const AUTH_CONTENT = {
     DESCRIPTION: "Log in to manage your blogs.",
     SUBMIT: "Log in",
     SUBMITTING: "Logging in...",
-    NO_ACCOUNT: "Don't have an account?",
-    REGISTER_LINK: "Create an account",
+    DEMO_CREDENTIALS: {
+      USERNAME: "emilys",
+      PASSWORD: "emilyspass",
+    },
+  },
+
+  DEMO_CREDENTIALS: {
+    USERNAME: "emilys",
+    PASSWORD: "emilyspass",
   },
 
   REGISTER: {
@@ -107,8 +114,13 @@ export const AUTH_CONTENT = {
   FIELDS: {
     NAME: "Name",
     NAME_PLACEHOLDER: "Your name",
+
+    USERNAME: "Username",
+    USERNAME_PLACEHOLDER: "Enter your username",
+
     EMAIL: "Email",
     EMAIL_PLACEHOLDER: "you@example.com",
+
     PASSWORD: "Password",
     LOGIN_PASSWORD_PLACEHOLDER: "Enter your password",
     REGISTER_PASSWORD_PLACEHOLDER: "At least 8 characters",
@@ -192,5 +204,5 @@ export const BLOG_FORM_CONTENT = {
   EDIT_DESCRIPTION: "Make changes to your article.",
   UPDATE: "Save changes",
   UPDATING: "Saving changes...",
-  UPLOADING: "Uploading..."
+  UPLOADING: "Uploading...",
 } as const;

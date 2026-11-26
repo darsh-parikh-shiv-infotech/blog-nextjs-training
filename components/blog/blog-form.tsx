@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useForm, useWatch } from "react-hook-form";
@@ -50,6 +50,7 @@ export function BlogForm({ mode, initialValues, onSubmit }: BlogFormProps) {
     ...EMPTY_FORM_VALUES,
     ...initialValues,
   };
+  const resetValuesRef = useRef<BlogFormValues>(EMPTY_FORM_VALUES);
 
   const {
     register,
@@ -64,11 +65,21 @@ export function BlogForm({ mode, initialValues, onSubmit }: BlogFormProps) {
   });
 
   useEffect(() => {
-    reset({
+    const values = {
       ...EMPTY_FORM_VALUES,
       ...initialValues,
-    });
+    };
+
+    reset(values);
+    resetValuesRef.current = values;
   }, [initialValues, reset]);
+
+  useLayoutEffect(() => {
+    return () => {
+      reset(resetValuesRef.current);
+      setIsSubmitting(false);
+    };
+  }, [reset]);
 
   const content = useWatch({ control, name: "content" }) ?? "";
   const imageUrl =

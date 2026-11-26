@@ -22,9 +22,14 @@ export function CoverImageUpload({
 }: CoverImageUploadProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const [preview, setPreview] = useState(value);
+  const [previewOverride, setPreviewOverride] = useState<{
+    value: string;
+    preview: string;
+  } | null>(null);
   const [isUploading, setIsUploading] = useState(false);
   const [error, setError] = useState("");
+  const preview =
+    previewOverride?.value === value ? previewOverride.preview : value;
 
   async function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
@@ -47,7 +52,7 @@ export function CoverImageUpload({
 
     const localPreview = URL.createObjectURL(file);
 
-    setPreview(localPreview);
+    setPreviewOverride({ value, preview: localPreview });
     setIsUploading(true);
     onUploadingChange?.(true);
 
@@ -80,11 +85,14 @@ export function CoverImageUpload({
       }
 
       onChange(result.secure_url);
-      setPreview(result.secure_url);
+      setPreviewOverride({
+        value: result.secure_url,
+        preview: result.secure_url,
+      });
     } catch (uploadError) {
       console.error("Cloudinary upload error:", uploadError);
 
-      setPreview(value);
+      setPreviewOverride(null);
 
       setError(
         uploadError instanceof Error
@@ -103,7 +111,7 @@ export function CoverImageUpload({
   }
 
   function removeImage() {
-    setPreview("");
+    setPreviewOverride(null);
     onChange("");
     setError("");
   }

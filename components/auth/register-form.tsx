@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { toast } from "sonner";
@@ -41,6 +41,13 @@ export function RegisterForm() {
     defaultValues: EMPTY_FORM_VALUES,
   });
 
+  useLayoutEffect(() => {
+    return () => {
+      reset(EMPTY_FORM_VALUES);
+      setSubmitting(false);
+    };
+  }, [reset]);
+
   async function onSubmit(values: RegisterInput) {
     setSubmitting(true);
 
@@ -60,11 +67,9 @@ export function RegisterForm() {
         return;
       }
 
-      if (result.success) {
-        reset(EMPTY_FORM_VALUES);
-        toast.success(result.message);
-        router.replace(ROUTES.MY_BLOGS);
-      }
+      reset(EMPTY_FORM_VALUES);
+      toast.success(result.message);
+      router.replace(ROUTES.MY_BLOGS);
       router.refresh();
     } catch {
       toast.error(MESSAGES.COMMON.NETWORK_ERROR);

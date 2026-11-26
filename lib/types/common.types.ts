@@ -28,7 +28,7 @@ export interface AuthUser {
 }
 
 export interface LoginInput {
-  email: string;
+  username: string;
   password: string;
 }
 
