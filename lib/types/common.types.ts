@@ -2,7 +2,6 @@ export type Blog = {
   id: string;
   slug: string;
   title: string;
-  description: string;
   category: string;
   author: string;
   ownerId: string | null;

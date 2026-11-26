@@ -10,6 +10,7 @@ import {
 } from "@/lib/constants/constant";
 import { getBlogBySlug } from "@/lib/services/blog.service";
 import { sanitizeBlogHtml } from "@/lib/utils/sanitize-blog-html";
+import { getBlogExcerpt } from "@/lib/utils/blog-content";
 
 interface BlogDetailsPageProps {
   params: Promise<{ slug: string }>;
@@ -29,7 +30,7 @@ export async function generateMetadata({
 
   return {
     title: `${blog.title} | ${APP_CONFIG.NAME}`,
-    description: blog.description,
+    description: getBlogExcerpt(blog.content, 160),
   };
 }
 
@@ -73,10 +74,6 @@ async function BlogDetailsContent({ slug }: { slug: string }) {
         <h1 className="mt-4 text-4xl leading-tight font-semibold tracking-[-0.04em] sm:text-5xl">
           {blog.title}
         </h1>
-
-        <p className="mt-5 text-lg leading-8 text-[#858278]">
-          {blog.description}
-        </p>
 
         <div className="mt-6 flex flex-wrap gap-2 text-sm text-[#96938a]">
           <span>{BLOG_DETAILS_CONTENT.WRITTEN_BY}</span>

@@ -178,6 +178,7 @@ export const BLOG_FORM_CONTENT = {
     TITLE: "Blog title",
     TITLE_PLACEHOLDER: "Give your blog a meaningful title",
     DESCRIPTION: "Short description",
+    COVER_IMAGE: "Cover Image",
     DESCRIPTION_PLACEHOLDER: "What is this article about?",
     CATEGORY: "Category",
     CONTENT: "Your story",
@@ -191,4 +192,5 @@ export const BLOG_FORM_CONTENT = {
   EDIT_DESCRIPTION: "Make changes to your article.",
   UPDATE: "Save changes",
   UPDATING: "Saving changes...",
+  UPLOADING: "Uploading..."
 } as const;

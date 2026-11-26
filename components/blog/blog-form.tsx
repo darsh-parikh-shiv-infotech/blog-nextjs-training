@@ -23,6 +23,7 @@ import {
 } from "@/lib/validations/blog.schema";
 
 import { getBlogContentText } from "@/lib/utils/blog-content";
+import { CoverImageUpload } from "./cover-image-upload";
 
 interface BlogFormProps {
   mode: "create" | "edit";
@@ -35,7 +36,6 @@ interface BlogFormProps {
 
 const EMPTY_FORM_VALUES: BlogFormValues = {
   title: "",
-  description: "",
   category: "",
   imageUrl: "",
   content: "",
@@ -44,6 +44,7 @@ const EMPTY_FORM_VALUES: BlogFormValues = {
 export function BlogForm({ mode, initialValues, onSubmit }: BlogFormProps) {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isImageUploading, setIsImageUploading] = useState(false);
 
   const defaultValues: BlogFormValues = {
     ...EMPTY_FORM_VALUES,
@@ -70,8 +71,17 @@ export function BlogForm({ mode, initialValues, onSubmit }: BlogFormProps) {
   }, [initialValues, reset]);
 
   const content = useWatch({ control, name: "content" }) ?? "";
+  const imageUrl =
+    useWatch({
+      control,
+      name: "imageUrl",
+    }) ?? "";
 
   const submitClickHandler = async (values: BlogFormValues) => {
+    if (isImageUploading) {
+      toast.error("Please wait for the image upload to finish.");
+      return;
+    }
     try {
       setIsSubmitting(true);
 
@@ -109,25 +119,6 @@ export function BlogForm({ mode, initialValues, onSubmit }: BlogFormProps) {
         error={errors.title?.message}
       />
 
-      {/* Description */}
-      <div className="space-y-2">
-        <Label>{BLOG_FORM_CONTENT.FIELDS.DESCRIPTION}</Label>
-
-        <textarea
-          {...register("description")}
-          placeholder={BLOG_FORM_CONTENT.FIELDS.DESCRIPTION_PLACEHOLDER}
-          rows={3}
-          className="flex w-full rounded-lg border border-input bg-transparent px-3 py-2 text-sm outline-none transition-colors placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50"
-          aria-invalid={Boolean(errors.description)}
-        />
-
-        {errors.description && (
-          <p className="text-sm text-destructive">
-            {errors.description.message}
-          </p>
-        )}
-      </div>
-
       {/* Category */}
       <div className="space-y-2">
         <Label htmlFor="category">{BLOG_FORM_CONTENT.FIELDS.CATEGORY}</Label>
@@ -155,12 +146,23 @@ export function BlogForm({ mode, initialValues, onSubmit }: BlogFormProps) {
 
       {/* Cover Image */}
       <div className="space-y-2">
-        <BaseTextField
-          label="Cover image URL"
-          placeholder="https://example.com/image.jpg"
-          {...register("imageUrl")}
-          error={errors.imageUrl?.message}
+        <Label>{BLOG_FORM_CONTENT.FIELDS.COVER_IMAGE}</Label>
+
+        <CoverImageUpload
+          value={imageUrl}
+          onChange={(url) =>
+            setValue("imageUrl", url, {
+              shouldDirty: true,
+              shouldValidate: true,
+            })
+          }
+          disabled={isSubmitting}
+          onUploadingChange={setIsImageUploading}
         />
+
+        {errors.imageUrl && (
+          <p className="text-sm text-destructive">{errors.imageUrl.message}</p>
+        )}
       </div>
 
       {/* Rich Text Content */}
@@ -196,11 +198,13 @@ export function BlogForm({ mode, initialValues, onSubmit }: BlogFormProps) {
 
         <BaseButton
           type="submit"
-          isLoading={isSubmitting}
+          isLoading={isSubmitting || isImageUploading}
           loadingText={
-            mode === "edit"
-              ? BLOG_FORM_CONTENT.UPDATING
-              : BLOG_FORM_CONTENT.SUBMITTING
+            isImageUploading
+              ? BLOG_FORM_CONTENT.UPLOADING
+              : mode === "edit"
+                ? BLOG_FORM_CONTENT.UPDATING
+                : BLOG_FORM_CONTENT.SUBMITTING
           }
         >
           {mode === "edit"

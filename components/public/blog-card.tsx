@@ -6,6 +6,7 @@ import {
 } from "@/lib/constants/constant";
 import type { Blog } from "@/lib/types/common.types";
 import { DeleteBlogButton } from "../blog/delete-blog-button";
+import { getBlogExcerpt } from "@/lib/utils/blog-content";
 
 type BlogCardProps = {
   blog: Blog;
@@ -52,8 +53,8 @@ export function BlogCard({ blog, showOwnerActions = false }: BlogCardProps) {
             {blog.title}
           </h2>
 
-          <p className="mt-2 text-sm leading-6 text-[#858278]">
-            {blog.description}
+          <p className="mt-2 line-clamp-3 text-sm leading-6 text-[#858278]">
+            {getBlogExcerpt(blog.content)}
           </p>
 
           <p className="mt-5 text-xs font-semibold text-[#5f6056]">

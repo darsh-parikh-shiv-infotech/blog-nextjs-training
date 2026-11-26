@@ -12,3 +12,20 @@ export function getBlogContentText(html: string): string {
     .replace(/\s+/g, " ")
     .trim();
 }
+
+export function getBlogExcerpt(
+  content: string | string[],
+  maxLength = 150,
+): string {
+  const contentString = Array.isArray(content)
+    ? content.join(" ")
+    : content;
+
+  const plainText = getBlogContentText(contentString);
+
+  if (plainText.length <= maxLength) {
+    return plainText;
+  }
+
+  return `${plainText.slice(0, maxLength).trimEnd()}...`;
+}
