@@ -10,7 +10,7 @@ export type Blog = {
   updatedAt: string;
   readTime: string;
   accentClass?: string;
-  content: string | string[];
+  content: string;
 };
 
 export interface User {

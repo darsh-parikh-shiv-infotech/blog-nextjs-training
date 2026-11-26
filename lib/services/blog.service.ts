@@ -1,3 +1,4 @@
+
 import "server-only";
 
 import {
@@ -13,7 +14,8 @@ import {
 
 import type { Blog } from "@/lib/types/common.types";
 import type { DummyJSONPost } from "@/lib/types/dummyjson.types";
-import { mapDummyJSONPostToBlog } from "../utils/blog-adapters";
+import { mapDummyJSONPostToBlog } from "@/lib/utils/blog-adapters";
+import { getBlogContentText } from "@/lib/utils/blog-content";
 
 async function getUsersMap() {
   const { users } = await fetchUsers();
@@ -52,9 +54,13 @@ export async function getBlogById(
 export async function getBlogBySlug(
   slug: string,
 ): Promise<Blog | null> {
-  const blogs = await getBlogs();
+  const match = slug.match(/-(\d+)$/);
 
-  return blogs.find((blog) => blog.slug === slug) ?? null;
+  if (!match) {
+    return null;
+  }
+
+  return getBlogById(match[1]);
 }
 
 export async function getBlogsByOwner(
@@ -64,6 +70,7 @@ export async function getBlogsByOwner(
     fetchPostsByUser(ownerId),
     getUsersMap(),
   ]);
+
   return posts.map((post) =>
     mapDummyJSONPostToBlog(post, usersMap.get(post.userId)),
   );
@@ -74,7 +81,7 @@ export async function createBlog(
 ): Promise<Blog> {
   const result = await addPost({
     title: blog.title,
-    body: blog.content as string,
+    body: getBlogContentText(blog.content),
     userId: Number(blog.ownerId),
     tags: [blog.category.toLowerCase()],
   });
@@ -91,15 +98,15 @@ export async function updateBlog(
 ): Promise<Blog> {
   const payload: Partial<DummyJSONPost> = {};
 
-  if (blog.title) {
+  if (blog.title !== undefined) {
     payload.title = blog.title;
   }
 
-  if (blog.content) {
-    payload.body = blog.content as string;
+  if (blog.content !== undefined) {
+    payload.body = getBlogContentText(blog.content);
   }
 
-  if (blog.category) {
+  if (blog.category !== undefined) {
     payload.tags = [blog.category.toLowerCase()];
   }
 

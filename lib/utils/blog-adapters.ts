@@ -20,6 +20,10 @@ const CATEGORY_MAP: Record<string, string> = {
   programming: "Development",
   design: "Design",
   business: "Product",
+  culture: "Culture",
+  ideas: "Ideas",
+  development: "Development",
+  product: "Product",
 };
 
 function getCategory(tags: string[]): string {
